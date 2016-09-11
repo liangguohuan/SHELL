@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# ==================================================================
+#
+# it can be instead of pkill the system command is
+#
+# ------------------------------------------------------------------
+source "/home/hanson/CodeHub/SHELL/libs/bootstrap.sh"
+
+HELP_MESSAGE="
+descript:
+	find the processes then kill them
+usage: 
+	grepkill {process_name}
+help: 
+	grepkill --help 
+notice:
+  it can be instead of pkill the system command is
+"
+
+if [[ -z "$1" || "$1" = "--help" || "$1" = "-h" ]]; then
+    helpShow
+fi
+
+ps -ef | grep -i $1 | grep -v grep | cut -c 9-15 | xargs sudo kill -9

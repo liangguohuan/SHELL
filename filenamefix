@@ -1,0 +1,26 @@
+#!/bin/bash
+# 修改文件名中文乱码
+
+source "/home/hanson/CodeHub/SHELL/libs/bootstrap.sh"
+
+HELP_MESSAGE="
+descript:
+	filename fix
+usage: 
+	filenamefix [path]
+"
+
+FILES=""
+if [[ -z "$1" ]]; then
+	cmn_echo_warn "******** path can not be empty! *******"
+fi
+
+if [[ -z "$1" || "$1" = "--help" || "$1" = "-h" ]]; then
+    helpShow
+fi
+
+
+if [[ -d $1 ]]; then
+    FILES=$1/*
+    convmv -r -f utf8 -t iso88591 $FILES --notest --nosmart && convmv -r -f gbk -t utf8 $FILES --notest --nosmart
+fi

@@ -1,0 +1,5 @@
+#!/bin/bash
+# pid=`ps aux|awk '{if($3 > 90) print $2}'`
+# if [[ $pid > 0 ]]; then
+#     cpulimit -p $pid -l 70 -z
+# fi

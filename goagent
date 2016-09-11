@@ -1,0 +1,65 @@
+#!/bin/bash   
+### BEGIN INIT INFO    
+# Provides:     GoAgent    
+# Default-Start:        2 3 4 5    
+# Default-Stop:         0 1 6    
+# Short-Description: GoAgent    
+# Description: GoAgent server    
+### END INIT INFO
+
+infoShow(){
+    echo "
+------------------------------------------------------
+GoAgent
+Listen Address     : 127.0.0.1:8087
+GAE Mode           : https
+GAE Profile        : ipv4
+GAE APPID          : blueskyallapp
+Pac Server         : http://192.168.0.186:8086/proxy.pac
+Pac File           : file:///home/hanson/goagent/local/proxy.pac
+------------------------------------------------------
+"
+    exit;
+}
+
+. /lib/lsb/init-functions
+PROGRAM=/home/hanson/goagent/local/proxy.py
+GOAGENTPID=`ps -ef | grep $PROGRAM | grep -v grep | awk '{print $2}'`
+test -x $PROGRAM || exit 0
+
+case "$1" in
+start)
+    if [[ -n "$GOAGENTPID" ]]; then
+        log_success_msg "goagent is running with the pid: $GOAGENTPID"
+    else
+        log_begin_msg "Starting goagent server"
+        start-stop-daemon --start --background --oknodo --exec $PROGRAM
+        log_end_msg 0
+        infoShow
+    fi
+    ;;
+
+stop)
+    if [[ -n "$GOAGENTPID" ]]; then
+        log_begin_msg "Stopping goagent server"
+        kill -15 $GOAGENTPID
+        log_end_msg 0
+    else
+        log_failure_msg "goagent is not running"
+    fi
+    ;;
+
+status)
+    if [[ -n "$GOAGENTPID" ]]; then
+        log_success_msg "goagent is running with the pid: $GOAGENTPID"
+    else
+        log_failure_msg "goagent is not running"
+    fi
+    ;;
+
+*)
+    log_success_msg "Usage: /etc/init.d/goagent {start|stop|status}"
+    exit 1
+    ;;
+esac
+exit 0

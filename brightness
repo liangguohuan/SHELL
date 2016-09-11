@@ -1,0 +1,8 @@
+#!/bin/bash
+# change brightness setting on startup or resume
+# link: sudo ln -s /home/hanson/.shell/brightness /usr/local/bin/brightness
+[[ -n $1 ]] \
+&& BRIGHTNESS=$1 \
+|| BRIGHTNESS=2
+
+pkexec /usr/lib/gnome-settings-daemon/gsd-backlight-helper --set-brightness $BRIGHTNESS

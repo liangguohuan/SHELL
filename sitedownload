@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# windows use '--restrict-file-names=windows' for coding
+# 
+source "/home/hanson/CodeHub/SHELL/libs/bootstrap.sh"
+
+HELP_MESSAGE="
+desc: 
+    download the whole site
+usage: 
+    sitedownload [url]  # [url]  the urlpath
+example:
+    sitedownload http://manual.51yip.com/ruby/
+"
+
+SITE=$1
+
+if [[ -z "$1" || "$1" = "--help" || "$1" = "-h" ]]; then
+    helpShow
+fi
+
+# Notice: /$ can not be '/$'
+# must be dir
+[[ "$SITE" =~ /$ ]] \
+    && eval \
+    || SITE="${SITE}/"
+
+# HOST=`echo http://manual.51yip.com/ruby/ | sed 's#\(.*\)\/\/\([^/]*\)\/\(.*\)#\3#'`
+HOST=`echo ${SITE} | awk -F '//' '{print $2}' | awk -F '/' '{print $1}'`
+
+msg_info "start download ... "
+
+[[ -n "$HOST" ]] && \
+wget \
+     --recursive \
+     --no-clobber \
+     --page-requisites \
+     --html-extension \
+     --convert-links \
+     --restrict-file-names=nocontrol \
+     --domains "$HOST" \
+     --no-parent \
+         "$SITE"
+
+msg_success "successed."

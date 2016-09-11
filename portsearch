@@ -1,0 +1,39 @@
+#!/bin/bash
+# desc: search process who  own the port
+# netstat -apn | grep $1, but is not be strict 
+
+source "/home/hanson/CodeHub/SHELL/libs/bootstrap.sh"
+
+HELP_MESSAGE="
+descript: 
+    search process who own the port with 'lsof ...' or 'netstat ...'
+usage: 
+    portsearch option {port}
+options:
+    --help,-h   show the help
+"
+
+if [[ -z "$1" ]] ;then
+    sudo netstat -tlnp
+    exit 0
+fi
+
+if [[ -z "$1" || "$1" = "--help" || "$1" = "-h" ]]; then
+    helpShow
+fi
+
+MSG=`sudo netstat -tlnp | egrep \(:$1\\\s+\|State\)`
+COUNT=`echo "$MSG" | wc -l`
+
+if [[ $COUNT > 1 ]]
+then 
+    # echo "======================== EXEC netstat =========================================================="
+    echo "$MSG"
+fi
+
+if MSG=`sudo lsof -P -i:$1`
+then
+    echo
+    # echo "======================== EXEC lsof ============================================================="
+    echo "$MSG"
+fi

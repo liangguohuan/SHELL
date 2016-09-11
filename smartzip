@@ -1,0 +1,69 @@
+#!/bin/bash
+source "/home/hanson/CodeHub/SHELL/libs/bootstrap.sh"
+
+HELP_MESSAGE="
+desc: 
+    智能地解压文件，支持 *.zip, *.tar.gz, *.bz2, *.7z
+usage: 
+    smartzip FILE [DIRECTORY]
+examples:
+    website wordpress.zip
+    website wordpress.zip /www/
+"
+
+if [[ -z "$1" || "$1" = "--help" || "$1" = "-h" ]]; then
+    helpShow
+fi
+
+# cmd 命令操作方式
+case "$1" in
+--help)
+	helpShow;;
+esac
+
+ftype=`file "$1"`
+case "$ftype" in
+    "$1: RAR archive"*)
+        if [[ -z "$2" ]]; then
+            unrar x "$1"
+        else
+            unrar x "$1"  "$2"
+        fi
+        ;;
+    "$1: Zip archive"*)
+        if [[ -z "$2" ]]; then
+            unzip "$1"
+        else
+            unzip "$1" -d "$2"
+        fi
+        ;;
+    "$1: XZ compressed"*)
+        if [[ -z "$2" ]]; then
+            tar -xvf "$1"
+        else
+            tar -xvf "$1" -C "$2"
+        fi
+        ;;
+    "$1: gzip compressed"*)
+        if [[ -z "$2" ]]; then
+            tar -zxvf "$1"
+        else
+            tar -zxvf "$1" -C "$2"
+        fi
+        ;;
+    "$1: bzip2 compressed"*)
+        if [[ -z "$2" ]]; then
+            tar -jxvf "$1"
+        else
+            tar -jxvf "$1" -C "$2"
+        fi
+        ;;
+    "$1: 7-zip archive"*)
+        if [[ -z "$2" ]]; then
+            7z x "$1"
+        else
+            7z x -o"$2" "$1"
+        fi
+        ;;
+    *) echo "File $1 can not be uncompressed with smartzip";;
+esac

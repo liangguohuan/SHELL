@@ -1,0 +1,18 @@
+#!/bin/bash
+
+########################################################################
+#=> 将本地文本同步到KuaiPan
+########################################################################
+
+# push vim config files to KuaiPan
+cp -f ~/.vimrc ~/KuaiPan/vim/notebook/vimrc
+cp -f ~/.vim-basic.vim ~/KuaiPan/vim/notebook/vim-basic.vim
+cp -f ~/.vim-plugin.vim ~/KuaiPan/vim/notebook/vim-plugin.vim
+
+# push command files to KuaiPan
+cp -f ~/.bashrc ~/KuaiPan/bashrc
+cp -f ~/.bash_aliases ~/KuaiPan/bash_aliases
+cp -f ~/.zshrc ~/KuaiPan/zshrc
+cp -f ~/.screenrc ~/KuaiPan/screenrc
+cp -f ~/.tmux.conf ~/KuaiPan/tmux.conf
+

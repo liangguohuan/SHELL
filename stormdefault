@@ -1,0 +1,54 @@
+#!/bin/bash  
+
+### BEGIN INIT INFO    
+# Notice: it is be used for Hortonworks, it's can't be work right in centos
+# Provides:     storm    
+# Required-Start:    
+# Required-Stop:    
+# Default-Start:        2 3 4 5    
+# Default-Stop:         0 1 6    
+# Short-Description: storm    
+# Description: storm server default
+### END INIT INFO    
+
+. /lib/lsb/init-functions    
+PROGRAM="/usr/lib/storm/bin/storm"
+PROGRAM_NIMBUS="${PROGRAM} nimbus"
+PROGRAM_SUPERVISOR="${PROGRAM} supervisor"
+PROGRAM_UI="${PROGRAM} ui"
+PROCESSIDS=`ps aux | egrep "storm (nimbus|supervisor|ui)" | awk '{print $2}' | sort -r`
+PROCESS_STATUS=`ps aux | egrep "storm (nimbus|supervisor|ui)" | awk '{print $2" " $12" "$13}'`
+
+test -x $PROGRAM || exit 0    
+
+case "$1" in    
+start)    
+    log_begin_msg "Starting storm server default"     
+    start-stop-daemon --start --background --oknodo --exec $PROGRAM_NIMBUS
+    log_success_msg " * storm nimbus had be started"
+    start-stop-daemon --start --background --oknodo --exec $PROGRAM_SUPERVISOR
+    log_success_msg " * storm supervisor had be started"
+    start-stop-daemon --start --background --oknodo --exec $PROGRAM_UI
+    log_success_msg " * storm ui had be started"
+    log_end_msg 0    
+    ;;    
+stop)    
+    log_begin_msg "Stopping storm server default"     
+    if [[ -n "$PROCESSIDS" ]]; then     
+        kill -9 $PROCESSIDS    
+    fi    
+    log_end_msg 0    
+    ;;    
+status)    
+    if [[ -n "$PROCESS_STATUS" ]]; then     
+        $PROCESS_STATUS
+    else
+        log_failure_msg "storm server default is not running"
+    fi
+    ;;    
+*)    
+    log_success_msg "Usage: /etc/init.d/stormdefault {start|stop|status}"     
+    exit 1
+    ;;  
+esac    
+exit 0

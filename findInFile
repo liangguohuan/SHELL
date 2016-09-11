@@ -1,0 +1,22 @@
+#!/bin/bash
+
+########################################################################
+#=> it can be replaced by 'ag' or 'ack'
+########################################################################
+
+source "/home/hanson/CodeHub/SHELL/libs/bootstrap.sh"
+
+HELP_MESSAGE="
+descript:
+    ind content contains {str} in files
+usage: 
+    findInFile {dir} {str}
+help:
+    findInFile --help 
+"
+
+if [[ -z "$1" || "$1" = "--help" || "$1" = "-h" ]]; then
+    helpShow
+fi
+
+find $1 -name \* -type f -print | xargs egrep -e "$2"

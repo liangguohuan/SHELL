@@ -1,0 +1,16 @@
+#!/bin/bash
+
+source "/home/hanson/CodeHub/SHELL/libs/bootstrap.sh"
+
+HELP_MESSAGE="
+descript:
+	dir stat with human read .
+usage: 
+	dirstat {dir}
+"
+
+if [[ -z "$1" || "$1" = "--help" || "$1" = "-h" ]]; then
+    helpShow
+fi
+
+sudo du -d 1 -h $1 | sort -h

@@ -1,0 +1,50 @@
+#!/bin/bash
+
+################################################################
+# => tmux init
+################################################################
+
+tmux_init_default ()
+{
+    tmux new -s fav -d -n "home"
+    tmux neww -n vim "vim"
+    # tmux neww -n hexo -c /media/d/hexo/blog "xampp startapache && hexo s"
+    tmux neww -n hexo -c /media/d/技术资料/最近文档/hexo/blog "hexo s"
+    tmux neww -n ruby -c ~/RubyProjects
+    tmux neww -n top htdop # exit the program will kill the window in tmux.
+    tmux selectw -t 1
+    tmux attach-session -d
+}
+
+tmux_init_laradock ()
+{
+    declare WORKSPACE="~/DockerWorkspace/docker-composes/laradock"
+    tmux new -s lar -d -n "main"
+    tmux run-shell "cd ${WORKSPACE} && docker-compose up -d nginx mysql redis"
+    tmux splitw -c "${WORKSPACE}"
+    tmux killp -a -t:.2
+    tmux splitw -c "~/CodeHub/PHP/Laravel"
+    tmux selectp -t:.1
+    tmux attach-session -d
+}
+
+# Default layout settings
+# 
+DEFAULT=tmux_init_laradock
+
+case "$1" in
+    "lar"*)
+        LAYOUT=tmux_init_laradock;;
+    "def"*)
+        LAYOUT=tmux_init_default;;
+             *)
+        LAYOUT="${DEFAULT}";;
+esac
+
+if which tmux 2>&1 >/dev/null; then
+    test -z "$TMUX" && (tmux attach || $LAYOUT)
+fi
+
+################################################################
+# => tmux init finish
+################################################################

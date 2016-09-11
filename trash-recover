@@ -1,0 +1,39 @@
+#!/bin/bash
+
+#
+# Recover files from trash
+#
+
+source "/home/hanson/CodeHub/SHELL/libs/bootstrap.sh"
+
+HELP_MESSAGE="
+desc: 
+    Recover files from trash. Trash file via nautilus as sudo can not recover files via nautilus,
+so let the command "trash-recover" help you.
+usage: 
+    trash-recover FILE...
+"
+
+# must use sudo
+# cmn_assert_running_as_root
+
+if [[ -z "$1" || "$1" = "--help" || "$1" = "-h" ]]; then
+    helpShow
+fi
+
+DIR_TRASH="${HOME}/.local/share/Trash"
+DIR_TRASHFILES="${DIR_TRASH}/files"
+DIR_TRASHINFO="${DIR_TRASH}/info"
+
+for FILE in $*
+do
+	FILE_PATH="${DIR_TRASHFILES}/${FILE}"
+	if [[ -e "${FILE_PATH}" ]]; then
+		FILE_PATH_TRASHINFO=${DIR_TRASHINFO}/${FILE}.trashinfo
+		FILE_PATH_RECOVER=$( sed -n "/Path/p" "${FILE_PATH_TRASHINFO}" | sed "s/Path=//" )
+		sudo mv $FILE_PATH $FILE_PATH_RECOVER
+		sudo rm $FILE_PATH_TRASHINFO
+	fi
+done
+
+msg_success "Wonderful, it's done." 

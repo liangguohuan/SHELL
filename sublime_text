@@ -1,0 +1,4 @@
+#!/bin/bash
+
+export LD_PRELOAD=/usr/lib/libsublime-imfix.so
+/opt/sublime_text/sublime_text

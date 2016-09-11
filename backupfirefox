@@ -1,0 +1,12 @@
+#!/bin/bash
+# 限制缓存最大为200Ｍ,超过则删除前两天文件
+# home="/home/hanson"
+# cachedir="/dev/shm/Cache"
+# limitTotal=204800
+# total=`du -s $cachedir | grep -Eo '[0-9]+'`
+# if [ $total -gt $limitTotal ]; then
+#     sudo find $cachedir -type f -mtime +1 -exec rm {} \;
+#     echo “`date`　已经进行限制操作！”　>> $home/firefox-backup.log
+# fi
+# sudo -u hanson tar -czf $home/firefox-data.tar.gz $cachedir > /dev/null 2>&1
+# sudo -u hanson mv /dev/shm/Cache /home/hanson/firefox/

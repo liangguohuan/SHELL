@@ -1,0 +1,46 @@
+#!/bin/bash  
+
+### BEGIN INIT INFO    
+# Provides:     jekyll    
+# Required-Start:    
+# Required-Stop:    
+# Default-Start:        2 3 4 5    
+# Default-Stop:         0 1 6    
+# Short-Description: jekyll    
+# Description: jekyll server    
+### END INIT INFO    
+
+. /lib/lsb/init-functions    
+PROGRAM=/usr/local/bin/jekyll
+JEKYLLID=`ps -ef | grep $PROGRAM | grep -v grep | awk '{print $2}'`    
+test -x $PROGRAM || exit 0    
+
+cd /media/d/jekyll/dark.github.io/
+
+case "$1" in    
+start)    
+    log_begin_msg "Starting jekyll server"     
+    $PROGRAM server -B -q
+    log_end_msg 0    
+    ;;    
+stop)    
+    log_begin_msg "Stopping jekyll server"     
+    if [[ -n "$JEKYLLID" ]]; then     
+        kill -9 $JEKYLLID    
+    fi    
+    log_end_msg 0    
+    ;;    
+status)    
+    if [[ -n "$JEKYLLID" ]]; then     
+        log_begin_msg "jekyll is running with the pid: $JEKYLLID"
+        log_end_msg 0
+    else
+        log_failure_msg "jekyll is not running"
+    fi
+    ;;    
+*)    
+    log_success_msg "Usage: /etc/init.d/jekyll {start|stop|status}"     
+    exit 1
+    ;;  
+esac    
+exit 0

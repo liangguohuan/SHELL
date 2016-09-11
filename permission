@@ -1,0 +1,18 @@
+#!/bin/bash
+source "/home/hanson/CodeHub/SHELL/libs/bootstrap.sh"
+
+HELP_MESSAGE="
+descript:
+	website permission, set the permission to the dir, so the dir can be rwx
+usage: 
+	permission {dir}
+help: 
+	permission --help 
+"
+
+if [[ -z "$1" || "$1" = "--help" || "$1" = "-h" ]]; then
+    helpShow
+fi
+
+sudo chown -R hanson:daemon $1;
+sudo chmod -R 770 $1;

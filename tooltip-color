@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# About Eclipse 
+# modify the tooltip_bg_color, tooltip_fg_color, left eclipse's tooltip show well
+#
+
+source "/home/hanson/CodeHub/SHELL/libs/bootstrap.sh"
+
+# # plugin recovery
+# PLUGIN_NAME="smartsave"
+# for FILENAME in `find /opt/eclipse-old  | grep $PLUGIN_NAME`
+# do
+# 	sudo cp -r $FILENAME ${FILENAME/-old/}
+# done
+
+COVER_COLOR=1
+BG_COLOR=FG_COLOR=BG_COLOR_NEW=FG_COLOR_NEW=
+
+if [[ $COVER_COLOR == 1 ]]; then
+	BG_COLOR=#000000
+	FG_COLOR=#FFFFFF
+	BG_COLOR_NEW=#FEFEE2
+	FG_COLOR_NEW=#333333
+else
+	BG_COLOR=#FEFEE2
+	FG_COLOR=#333333
+	BG_COLOR_NEW=#000000
+	FG_COLOR_NEW=#FFFFFF
+fi
+
+sed -i -e "s/tooltip_bg_color ${BG_COLOR}/tooltip_bg_color ${BG_COLOR_NEW}/" \
+       -e "s/tooltip_fg_color ${FG_COLOR}/tooltip_fg_color ${FG_COLOR_NEW}/" \
+       /usr/share/themes/Ambiance/gtk-3.0/gtk-main.css
+
+sed -i -e "s/tooltip_bg_color:${BG_COLOR}/tooltip_bg_color:${BG_COLOR_NEW}/" \
+       -e "s/tooltip_fg_color:${FG_COLOR}/tooltip_fg_color:${FG_COLOR_NEW}/" \
+       /usr/share/themes/Ambiance/gtk-2.0/gtkrc \
+       /usr/share/themes/Ambiance/gtk-3.0/settings.ini
