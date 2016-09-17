@@ -32,8 +32,7 @@
 ########################################################################
 source "/home/hanson/CodeHub/SHELL/libs/bootstrap.sh"
 
-git --version &>/dev/null
 
-if [[ $? == 0 ]]; then
-    echo 1111
-fi
+for x in $@; do
+    echo $x
+done

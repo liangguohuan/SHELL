@@ -42,6 +42,28 @@
 ########################################################################
 
 #
+# bash generate random character alphanumeric string (upper and lowercase) 
+# 
+# ARG1 = string length, default:32
+#
+function randchar {
+	[[ -n $1 ]] && WIDTH=$1 || WIDTH=32
+    RANDUUID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w "$WIDTH" | head -n 1)
+    echo $RANDUUID
+}
+
+#
+# bash generate random number
+# 
+# ARG1 = number width, default:1
+#
+function randdigital {    
+    [[ -n $1 ]] && WIDTH=$1 || WIDTH=1
+    RANDNUMBER=$(cat /dev/urandom | tr -dc '0-9' | fold -w 256 | head -n 1 | sed -e 's/^0*//' | head --bytes "$WIDTH")
+    echo $RANDNUMBER
+}
+
+#
 # 统计字符串长度
 # 
 # ARG1 = string to be count length
