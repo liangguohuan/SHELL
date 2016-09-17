@@ -1,0 +1,46 @@
+#!/bin/bash
+
+########################################################################
+#=> 引用常用函数库
+########################################################################
+source "/home/hanson/CodeHub/SHELL/libs/bootstrap.sh"
+
+HELP_MESSAGE="
+descript:
+    video combin.
+usage: 
+    video-combin filename... outputfile
+"
+
+if [[ -z "$1" || "$1" = "--help" || "$1" = "-h" ]]; then
+    helpShow
+fi
+
+TEMPFILE="/tmp/"$(randchar)
+OUTPUTFILE=${!#}
+# FILEEXT="${OUTPUTFILE##*.}"
+# [[ "$FILEEXT" == "$OUTPUTFILE" ]] && FILEEXT=''
+if [[ $# < 3 ]]; then
+    msg_error 'parames count must be over 2'
+    exit 1
+fi
+
+# check files and write file list to tempfile
+# for FILE in $@; do
+#     echo $FILE
+# done
+until [[ $# == 0 ]]; do
+    FILE="$1"
+    if [[ "$FILE" != "$OUTPUTFILE" ]]; then
+        file_exists "$FILE"
+        die_if_false $? "File does not exist"
+        echo "file $PWD/$FILE" >> "$TEMPFILE"
+    fi
+    shift
+done
+
+# combin
+ffmpeg -f concat -i "$TEMPFILE" -c copy "$OUTPUTFILE"
+
+# delete the temp file
+rm -f "$TEMPFILE"
