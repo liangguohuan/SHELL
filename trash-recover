@@ -1,8 +1,31 @@
 #!/bin/bash
-
-#
+# Perfect trash-cli (https://github.com/andreafrancia/trash-cli)
 # Recover files from trash
+# 
+# why dont do this with restore-trash ? because root's file trigger error 'Permission denied'
+# zsh completion for it: https://github.com/liangguohuan/ZSH-COMPLETIONS/blob/master/_trash-recover
 #
+# Tips:
+# 1. trigger error 'cannot trash regular file' when trash-put [file]
+#    trash-put root's file must do it with 'sudo trash-put', if not, it will trigger this error,
+#    and put the trash.info files to Trash Hub with the current user permission, and the root's file
+#    you want to trash still in there.
+# 
+# 2. let the sudo dont ask password
+# 
+#    sudo visudo
+#    find # Allow members of group sudo to execute any command，
+#    replace
+#       %sudo   ALL=(ALL:ALL)
+#    to
+#       %sudo   ALL=(ALL:ALL) NOPASSWD:NOPASSWD:ALL
+#    Ctrl + o Save，Ctrl + x Quit
+# 
+# 3. alias trash-cli package commands
+#    alias trash=sudo trash
+#    alias trash-put=sudo trash
+#    alias trash-list=sudo trash-list
+# 
 
 source "/home/hanson/CodeHub/SHELL/libs/bootstrap.sh"
 
@@ -30,7 +53,7 @@ do
 	FILE_PATH="${DIR_TRASHFILES}/${FILE}"
 	if [[ -e "${FILE_PATH}" ]]; then
 		FILE_PATH_TRASHINFO=${DIR_TRASHINFO}/${FILE}.trashinfo
-		FILE_PATH_RECOVER=$( sed -n "/Path/p" "${FILE_PATH_TRASHINFO}" | sed "s/Path=//" )
+		FILE_PATH_RECOVER=$( sudo sed -n "/Path/p" "${FILE_PATH_TRASHINFO}" | sed "s/Path=//" )
 		sudo mv $FILE_PATH $FILE_PATH_RECOVER
 		sudo rm $FILE_PATH_TRASHINFO
 	fi
