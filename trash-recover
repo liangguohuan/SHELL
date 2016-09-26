@@ -51,7 +51,7 @@ DIR_TRASHINFO="${DIR_TRASH}/info"
 for FILE in $*
 do
 	FILE_PATH="${DIR_TRASHFILES}/${FILE}"
-	if [[ -e "${FILE_PATH}" ]]; then
+	if [[ -L "${FILE_PATH}" || -e "${FILE_PATH}" ]]; then
 		FILE_PATH_TRASHINFO=${DIR_TRASHINFO}/${FILE}.trashinfo
 		FILE_PATH_RECOVER=$( sudo sed -n "/Path/p" "${FILE_PATH_TRASHINFO}" | sed "s/Path=//" )
 		sudo mv $FILE_PATH $FILE_PATH_RECOVER
