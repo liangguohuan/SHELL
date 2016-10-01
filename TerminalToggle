@@ -20,6 +20,10 @@ if [[ -f $file ]]  ; then
         state=$statehide
         xdotool windowmap "$winid"
         xdotool windowactivate "$winid"
+        y=`xdotool getwindowgeometry --shell "$winid" | grep Y= | grep -v grep | tr -d 'Y='`
+        if [[ $y > 0 ]]; then
+            xdotool windowmove --sync "$winid" 260 160
+        fi
     else
         state=$stateunhide
         xdotool windowunmap "$winid"
