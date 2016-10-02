@@ -35,10 +35,11 @@ if [[ -f $file ]]  ; then
         fi
     fi
 
-    # if [[ $? > 0 ]]; then
-    #     rm $file*
-    #     $0 # reload
-    # fi
+    # If the window is destroyed manually, reload it
+    if [[ $? > 0 ]]; then
+        rm $file*
+        $0 # reload
+    fi
 
     echo $state > $filestate
 else 
