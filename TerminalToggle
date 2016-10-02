@@ -10,30 +10,37 @@ title="TerminalToggle"
 
 file=/tmp/terminal_toggle_window
 filestate=/tmp/terminal_toggle_window_state
+filegeometry=/tmp/terminal_toggle_window_geometry
 statehide='hide'
 stateunhide='unhide'
 
 if [[ -f $file ]]  ; then
     winid=`cat $file`
     state=`cat $filestate`
+
     if [[ $state == $stateunhide ]]; then
         state=$statehide
         xdotool windowmap "$winid"
         xdotool windowactivate "$winid"
-        y=`xdotool getwindowgeometry --shell "$winid" | grep Y= | grep -v grep | tr -d 'Y='`
-        if [[ $y > 0 ]]; then
-            xdotool windowmove --sync "$winid" 260 160
+        eval $( cat "$filegeometry" )
+        xdotool windowmove --sync "$winid" $X $Y
+    else
+        if [[ `xdotool getwindowfocus` == "$winid" ]]; then
+            state=$stateunhide
+            xdotool getwindowgeometry --shell "$winid" > $filegeometry
+            xdotool windowunmap "$winid"
+        else
+            state=$statehide
+            xdotool windowactivate "$winid"
         fi
-    else
-        state=$stateunhide
-        xdotool windowunmap "$winid"
     fi
-    if [[ $? > 0 ]]; then
-        rm $file*
-        $0 # reload
-    else
-        echo $state > $filestate
-    fi
+
+    # if [[ $? > 0 ]]; then
+    #     rm $file*
+    #     $0 # reload
+    # fi
+
+    echo $state > $filestate
 else 
     gnome-terminal -t "$title"
     xdotool search --sync --onlyvisible --name "^$title$"
