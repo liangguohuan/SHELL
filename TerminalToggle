@@ -6,7 +6,7 @@
 source "/home/hanson/CodeHub/SHELL/libs/bootstrap.sh"
 
 
-title="TerminalToggle"
+title=" "
 
 file=/tmp/terminal_toggle_window
 filestate=/tmp/terminal_toggle_window_state
@@ -43,7 +43,7 @@ if [[ -f $file ]]  ; then
 
     echo $state > $filestate
 else 
-    gnome-terminal -t "$title"
+    gnome-terminal --geometry=128x36+360+240 -t "$title" &>/dev/null
     xdotool search --sync --onlyvisible --name "^$title$"
     wid=`xdotool getactivewindow`
     echo $wid > $file
