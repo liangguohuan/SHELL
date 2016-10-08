@@ -1,0 +1,14 @@
+#!/bin/bash
+# Replace system 'man' into this.
+# this 'man' command wrapped vim plugin 'vim-superman'.
+# Steps:
+#   1. create this command.
+#   2. create symbole link to '/usr/local/bin', '/usr/local/bin' must be first than '/usr/bin/' in $PATH
+#
+
+vim -c "SuperMan $*"
+
+if [ "$?" != "-1"  ]; then
+    echo "No manual entry for $*"
+fi
+
