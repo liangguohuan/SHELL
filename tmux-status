@@ -1,0 +1,21 @@
+#!/bin/bash
+# Breif: 
+#   write complicated code for displaying tmux status often get erros,
+#   so create a small file to be convenient to be calling.
+# 
+
+########################################################################
+#=> 引用常用函数库
+########################################################################
+source "/home/hanson/CodeHub/SHELL/libs/bootstrap.sh"
+
+case "$1" in
+    uptime)
+        uptime | grep -o -e '[0-9]\+:[0-9]\+,' | tr -d ','
+        ;;
+    capslock)
+        xset -q | grep Caps | awk '{print $4}'
+        ;;
+    *)
+        echo "NONE"
+esac
