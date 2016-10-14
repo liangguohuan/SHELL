@@ -11,7 +11,7 @@ source "/home/hanson/CodeHub/SHELL/libs/bootstrap.sh"
 
 case "$1" in
     uptime)
-        uptime | grep -o -e '[0-9]\+:[0-9]\+,' | tr -d ','
+        uptime | grep -o -e '[0-9]\+:[0-9]\+,' | tr -d ',' | sed 's/$/up/'
         ;;
     capslock)
         xset -q | grep Caps | awk '{print $4}'
