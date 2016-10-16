@@ -9,7 +9,7 @@
 ########################################################################
 source "/home/hanson/CodeHub/SHELL/libs/bootstrap.sh"
 
-ut=$(uptime | grep -o -e '[0-9]\+:[0-9]\+,' | tr -d ',' | sed 's/$//')
+ut=$(uptime | grep -o -e 'up[^,]*\?,' | tr -d ',' | sed 's/up\s*//')
 ut="⌛ ${ut}"
 
 lock=$(xset -q | grep Caps | awk '{print $4}')
