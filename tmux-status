@@ -9,13 +9,25 @@
 ########################################################################
 source "/home/hanson/CodeHub/SHELL/libs/bootstrap.sh"
 
+ut=$(uptime | grep -o -e '[0-9]\+:[0-9]\+,' | tr -d ',' | sed 's/$//')
+ut="⌛ ${ut}"
+
+lock=$(xset -q | grep Caps | awk '{print $4}')
+[[ $lock == "on" ]] && lock="on" || lock="off"
+lock="⌨  ${lock}"
+
 case "$1" in
+    winsign)
+        echo "≡ "
+        ;;
     uptime)
-        uptime | grep -o -e '[0-9]\+:[0-9]\+,' | tr -d ',' | sed 's/$/up/'
+        echo $ut
         ;;
     capslock)
-        xset -q | grep Caps | awk '{print $4}'
+        echo $lock
         ;;
-    *)
-        echo "NONE"
+    mixed)
+        echo "${lock} ${ut}"
+        ;;
+    *) echo "NONE"
 esac
