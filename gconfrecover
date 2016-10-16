@@ -1,0 +1,55 @@
+#!/bin/bash
+
+# Breif: 
+#   This shell is used for recovering gnome-terminal config.
+#   The backup config is about the palette is modified for solarized colorscheme unify
+#   gnome-terminal color 'dircolors.256dark'
+#   
+# 
+
+# <?xml version="1.0"?>
+# <gconf>
+	# <entry name="scrollbar_position" mtime="1476637160" type="string">
+		# <stringvalue>hidden</stringvalue>
+	# </entry>
+	# <entry name="default_size_rows" mtime="1476637160" type="int" value="36"/>
+	# <entry name="default_size_columns" mtime="1476637160" type="int" value="128"/>
+	# <entry name="use_custom_default_size" mtime="1476637160" type="bool" value="true"/>
+	# <entry name="bold_color_same_as_fg" mtime="1422889165" type="bool" value="true"/>
+	# <entry name="allow_bold" mtime="1403138909" type="bool" value="true"/>
+	# <entry name="default_show_menubar" mtime="1476637160" type="bool" value="false"/>
+	# <entry name="background_darkness" mtime="1476637160" type="float" value="0.98853498697280884"/>
+	# <entry name="background_type" mtime="1474941486" type="string">
+		# <stringvalue>solid</stringvalue>
+	# </entry>
+	# <entry name="font" mtime="1476637160" type="string">
+		# <stringvalue>SauceCodePro NF Medium 11</stringvalue>
+	# </entry>
+	# <entry name="use_system_font" mtime="1476637160" type="bool" value="false"/>
+	# <entry name="use_theme_colors" mtime="1476637160" type="bool" value="false"/>
+	# <entry name="title" mtime="1476637160" type="string">
+		# <stringvalue>Terminal</stringvalue>
+	# </entry>
+	# <entry name="palette" mtime="1476639819" type="string">
+		# <stringvalue>#000000000000:#FFFF55545554:#5F5F87870000:#AAAA55550000:#00008786FFFF:#AAAA0000AAAA:#0000AAAAAAAA:#AAAAAAAAAAAA:#555555555555:#FEFE75757575:#B0B0FCFC6767:#FFFFFFFF5555:#707081818383:#FFFF5555FFFF:#5555FFFFFFFF:#FFFFFFFFFFFF</stringvalue>
+	# </entry>
+	# <entry name="alternate_screen_scroll" mtime="1476637160" type="bool" value="true"/>
+	# <entry name="background_color" mtime="1476637160" type="string">
+		# <stringvalue>#272728282222</stringvalue>
+	# </entry>
+	# <entry name="visible_name" mtime="1476637160" type="string">
+		# <stringvalue>Default</stringvalue>
+	# </entry>
+	# <entry name="bold_color" mtime="1476637160" type="string">
+		# <stringvalue>#000000000000</stringvalue>
+	# </entry>
+	# <entry name="foreground_color" mtime="1476637160" type="string">
+		# <stringvalue>#BABABDBDB6B6</stringvalue>
+	# </entry>
+# </gconf>
+
+filename="${HOME}/.gconf/apps/gnome-terminal/profiles/Default/%gconf.xml"
+
+cat $0 | sed -n '/^# <?xml/,/^# <\/gconf/p' | sed 's/# //g' > "${filename}"
+
+echo "Succeed!"
