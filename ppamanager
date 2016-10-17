@@ -2,11 +2,14 @@
 
 # Brief:
 #   ppamanager is a shell for managing ppa.
+#
 # QA:
 #   why do it?
 #   Well, ppa manage get no nice at platform ubuntu. 
 #   1. simple handle via ubuntu 'system config'->'software and update'
-#   2. A gui ppa manager like 'y-ppa-manager', it' nicy, but often get no response.  # Fetures:
+#   2. A gui ppa manager like 'y-ppa-manager', it' nicy, but often get no response.  
+#
+# Fetures:
 #   1. show list for ppa
 #   2. show info about ppa
 #   3. disable ppa
