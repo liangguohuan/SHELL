@@ -108,7 +108,7 @@ function getlist {
 #  Handle command line arguments
 #-----------------------------------------------------------------------
 
-[[ -z "$1" ]] && usage; exit 1
+[[ -z "$1" ]] && usage && exit 1
 
 while getopts ":hvliedp" opt
 do
@@ -123,15 +123,9 @@ do
         while getopts ":ayn" optin
         do
             case $optin in
-                a)
-                    tag=a
-                    ;;
-                y)
-                    tag=y
-                    ;;
-                n)
-                    tag=n
-                    ;;
+                a) tag=a ;;
+                y) tag=y ;;
+                n) tag=n ;;
             esac
         done
         out=$(getlist "$tag")
@@ -144,15 +138,9 @@ do
         while getopts ":ayn" optin
         do
             case $optin in
-                a)
-                    tag=a
-                    ;;
-                y)
-                    tag=y
-                    ;;
-                n)
-                    tag=n
-                    ;;
+                a) tag=a ;;
+                y) tag=y ;;
+                n) tag=n ;;
             esac
         done
         PS3='Please enter your choice: '
