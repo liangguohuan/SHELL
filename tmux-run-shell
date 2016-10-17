@@ -1,0 +1,18 @@
+#!/bin/bash
+# Breif: 
+#   tmux run-shell action exec complicate command cause chaos.
+#   maybe is the command str contains some specail char like (`"'),
+#   it seems like the command would be cache.
+# 
+
+########################################################################
+#=> common libs
+########################################################################
+source "/home/hanson/CodeHub/SHELL/libs/bootstrap.sh"
+
+case "$1" in
+    lastwindow)
+        tmux select-window -t `tmux list-windows | sed -n '$p' | awk -F ':' '{print $1}'`
+        ;;
+    *) echo "NONE" ;;
+esac
