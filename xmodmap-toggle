@@ -1,0 +1,100 @@
+#!/bin/bash
+
+########################################################################
+#=> common libs
+########################################################################
+source "${HOME}/CodeHub/SHELL/libs/bootstrap.sh"
+
+# swap keys 
+# Caps_Lock <=> Shift_L
+# Control_L <=> Alt_L
+# Alt_L <=> Super_L
+#
+# 37    	0xffe3 (Control_L)	0x0000 (NoSymbol)	0xffe3 (Control_L)	
+# 50    	0xffe1 (Shift_L)	0x0000 (NoSymbol)	0xffe1 (Shift_L)	
+# 64    	0xffe9 (Alt_L)	0xffe7 (Meta_L)	0xffe9 (Alt_L)	0xffe7 (Meta_L)	
+# 66    	0xffe5 (Caps_Lock)	0x0000 (NoSymbol)	0xffe5 (Caps_Lock)	
+# 105    	0xffe4 (Control_R)	0x0000 (NoSymbol)	0xffe4 (Control_R)	
+# 108    	0xffea (Alt_R)	0xffe8 (Meta_R)	0xffea (Alt_R)	0xffe8 (Meta_R)	
+# 133    	0xffeb (Super_L)	0x0000 (NoSymbol)	0xffeb (Super_L)	
+#
+# shift       Shift_L (0x32),  Shift_R (0x3e)
+# lock        Caps_Lock (0x42)
+# control     Control_L (0x25),  Control_R (0x69)
+# mod1        Alt_L (0x40),  Alt_R (0x6c),  Meta_L (0xcd)
+# mod2        Num_Lock (0x4d)
+# mod3      
+# mod4        Super_L (0x85),  Super_R (0x86),  Super_L (0xce),  Hyper_L (0xcf)
+# mod5        ISO_Level3_Shift (0x5c),  Mode_switch (0xcb)
+
+function getxmodmapcmd() {
+DEFAULTMAPS="
+!default keymap
+keycode 37  = Control_L
+keycode 50  = Shift_L
+keycode 64  = Alt_L Meta_L
+keycode 66  = Caps_Lock
+keycode 73  = F7
+keycode 105 = Control_R
+keycode 108 = Alt_R Meta_R
+keycode 133 = Super_L
+"
+SWAPMAPS="
+!swap keymap
+keycode 37  = Super_L
+keycode 50  = 0x0000
+keycode 64  = Control_L
+keycode 66  = Shift_L
+keycode 73  = Caps_Lock
+keycode 105 = Alt_R Meta_R
+keycode 108 = Control_R
+keycode 133 = Alt_L Meta_L
+"
+
+temp=
+case $1 in
+    swap)
+        temp="$SWAPMAPS"
+        ;;
+    default)
+        temp="$DEFAULTMAPS"
+        ;;
+    *) 
+        echo
+        exit 1
+        ;;
+esac
+
+
+TEMPLATE="!customkeymap
+
+clear control
+clear mod1
+clear mod4
+clear lock
+clear shift
+
+"$temp"
+
+add control = Control_L Control_R
+add mod1    = Alt_L Meta_L Alt_R
+add mod4    = Super_L
+add lock    = Caps_Lock
+add shift   = Shift_L Shift_R
+"
+echo "${TEMPLATE}"
+}
+
+## main code here
+FILENAME="${HOME}/.Xmodmap"
+
+tag=
+[[ -n $(sed -n '/default keymap/p' $FILENAME) ]] && tag="swap" || tag="default"
+
+CMDSTR=$(getxmodmapcmd $tag)
+
+if [[ -n "$CMDSTR" ]]; then
+    sed -i '/customkeymap/,$d' "$FILENAME"
+    echo "$CMDSTR" >> "$FILENAME"
+    xmodmap "$FILENAME"
+fi
