@@ -65,10 +65,8 @@ function getlist {
     list=$(ls "$PPAHOME" | sed 's/.list\(.save\)\?//g'| uniq | sort)
     case $1 in
         a)
-            echo "$list"
+            echo "$list" | nl
             tc=$(echo "$list" | wc -l)
-            echo -e "\n------ stat -------------------------------"
-            echo "All ppa count is: $tc"
             ;;
         y)
             yc=0
@@ -76,7 +74,7 @@ function getlist {
             for x in $list ; do
                 out=$(cat "$PPAHOME/$x.list" | sed '/^# /d')
                 if [[ -n "$out" ]]; then
-                    echo "$x"
+                    echo " $x"
                     yc=$(expr $yc + 1)
                 fi
                 tc=$(expr $tc + 1)
@@ -90,7 +88,7 @@ function getlist {
             for x in $list ; do
                 out=$(cat "$PPAHOME/$x.list" | sed '/^# /d')
                 if [[ -z "$out" ]]; then
-                    echo "$x"
+                    echo " $x"
                     yc=$(expr $yc + 1)
                 fi
                 tc=$(expr $tc + 1)
