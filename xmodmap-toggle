@@ -6,6 +6,7 @@
 #   1. keycode can be found via command 'xev'
 #   2. xmodmap -pm  #print modifier map
 #   3. xmodmap -pk  #print keymap table
+#   4. disable key for nothing: keycode 50 = 0x0000
 #
 
 ########################################################################
@@ -38,21 +39,25 @@ keycode 37  = Control_L
 keycode 50  = Shift_L
 keycode 64  = Alt_L Meta_L
 keycode 66  = Caps_Lock
+keycode 72  = F6
 keycode 73  = F7
 keycode 105 = Control_R
 keycode 108 = Alt_R Meta_R
 keycode 133 = Super_L
+keycode 135 = Menu
 "
 SWAPMAPS="
 !swap keymap
 keycode 37  = Super_L
-keycode 50  = 0x0000
+keycode 50  = Shift_L
 keycode 64  = Control_L
 keycode 66  = Shift_L
+keycode 72  = Menu
 keycode 73  = Caps_Lock
 keycode 105 = Alt_R Meta_R
-keycode 108 = Control_R
+keycode 108 = F6
 keycode 133 = Alt_L Meta_L
+keycode 135 = Control_R
 "
 
 temp=
