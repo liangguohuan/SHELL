@@ -35,6 +35,7 @@ source "${HOME}/CodeHub/SHELL/libs/bootstrap.sh"
 function getxmodmapcmd() {
 DEFAULTMAPS="
 !default keymap
+keycode 9   = Escape
 keycode 37  = Control_L
 keycode 50  = Shift_L
 keycode 64  = Alt_L Meta_L
@@ -48,10 +49,11 @@ keycode 135 = Menu
 "
 SWAPMAPS="
 !swap keymap
+keycode 9   = F7
 keycode 37  = Super_L
 keycode 50  = Shift_L
 keycode 64  = Control_L
-keycode 66  = Shift_L
+keycode 66  = Escape
 keycode 72  = Menu
 keycode 73  = Caps_Lock
 keycode 105 = Alt_R Meta_R
