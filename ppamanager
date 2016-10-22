@@ -171,9 +171,11 @@ do
                     ;;
             esac
         done
-        filename="$PPAHOME/$1.list"
+        filename="$PPAHOME/$opt.list"
         # only change the first line in file
-        [[ -n "$filename" ]] && sed -i -e '1s/^#\+\s*\(#*\s*\)*//'
+        [[ -n "$filename" ]] && sudo sed -i -e '1s/^#\+\s*\(#*\s*\)*//' "$filename"
+        # update source.list
+        $0 -u
         ;;
     d|disable     )
         PS3='Please enter your choice: '
@@ -186,9 +188,9 @@ do
                     ;;
             esac
         done
-        filename="$PPAHOME/$1.list"
+        filename="$PPAHOME/$opt.list"
         # only change the first line in file
-        [[ -n "$filename" ]] && sed -i -e "1s/^/# /" 
+        [[ -n "$filename" ]] && sudo sed -i -e "1s/^/# /" "$filename"
         ;;
 
     p|purge     )
