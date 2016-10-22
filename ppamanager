@@ -15,6 +15,7 @@
 #   3. disable ppa
 #   4. enable ppa
 #   5. purge ppa
+#   6. update /etc/apt/sources.list.d/* via goagent
 
 __ScriptVersion="1.0"
 
@@ -34,6 +35,7 @@ function usage ()
     -e|enable     Enable ppa
     -d|disable    Disable ppa
     -p|purge      purge ppa
+    -u|update     update all ppa in /etc/apt/sources.list.d
     -y            only list the enabled ppa
     -n            only list the disabled ppa
     -a            list all ppa
@@ -108,7 +110,7 @@ function getlist {
 
 [[ -z "$1" ]] && usage && exit 1
 
-while getopts ":hvliedp" opt
+while getopts ":hvliedpu" opt
 do
   case $opt in
 
@@ -206,6 +208,12 @@ do
         else
             echo "Sorry: it won't support, only launchpad.net!"
         fi
+        ;;
+    
+    u|update )
+        sudo apt-get update -o Acquire::http::proxy="http://127.0.0.1:8087/" \
+                            -o Dir::Etc::sourcelist=/etc/apt/sources.list.d \
+                            -o Acquire::https::dl.google.com::Verify-Peer="false"
         ;;
 
     * )  echo -e "\n  Option does not exist : $OPTARG\n"
