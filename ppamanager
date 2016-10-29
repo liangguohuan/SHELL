@@ -67,8 +67,10 @@ function getlist {
     list=$(ls "$PPAHOME" | sed 's/.list\(.save\)\?//g'| uniq | sort)
     case $1 in
         a)
-            echo "$list" | nl
+            echo "$list"
             tc=$(echo "$list" | wc -l)
+            echo -e "\n------ stat -------------------------------"
+            echo "All ppa count is: $tc"
             ;;
         y)
             yc=0
@@ -128,7 +130,7 @@ do
                 n) tag=n ;;
             esac
         done
-        out=$(getlist "$tag")
+        out=$(getlist "$tag" | nl | sed -e 's/[0-9]\+\s\+\-/\-/' -e 's/[0-9]\+\s\+All/All/' )
         echo "$out"
         
         ;;
@@ -213,9 +215,22 @@ do
         ;;
     
     u|update )
-        sudo apt-get update -o Acquire::http::proxy="http://127.0.0.1:8087/" \
-                            -o Dir::Etc::sourcelist=/etc/apt/sources.list.d \
-                            -o Acquire::https::dl.google.com::Verify-Peer="false"
+        tag=
+        while getopts ":yn" optin
+        do
+            case $optin in
+                y) tag=y ;;
+                n) tag=n ;;
+                *) tag=n ;;
+            esac
+        done
+        if [[ "$tag" == 'y' ]]; then
+            sudo apt-get update -o Acquire::http::proxy="http://127.0.0.1:8087/" \
+                -o Dir::Etc::sourcelist=/etc/apt/sources.list.d \
+                -o Acquire::https::dl.google.com::Verify-Peer="false"
+        else
+            sudo apt-get update
+        fi
         ;;
 
     * )  echo -e "\n  Option does not exist : $OPTARG\n"
