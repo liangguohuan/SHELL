@@ -6,7 +6,7 @@
 #   2. create symbole link to '/usr/local/bin', '/usr/local/bin' must be first than '/usr/bin/' in $PATH
 #
 
-vim -c "SuperMan $*"
+vim -u ~/.superman.vim -c "SuperMan $*"
 
 if [ "$?" != "-1"  ]; then
     echo "No manual entry for $*"
