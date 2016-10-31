@@ -43,10 +43,10 @@ if [[ -f $file ]]  ; then
 
     echo $state > $filestate
 else 
-    gnome-terminal --geometry=128x36+360+240 -t "$title" &>/dev/null
-    xdotool search --sync --onlyvisible --name "^$title$"
+    gnome-terminal --geometry=133x37+1190+705 -t "$title" &
+    xdotool search --sync --onlyvisible --class "gnome-terminal" windowactivate
     wid=`xdotool getactivewindow`
     echo $wid > $file
     # xdotool windowsize "$wid" 100% 100%
-    xdotool key --delay 1000 F11
+    # xdotool key --delay 1000 F11
 fi
