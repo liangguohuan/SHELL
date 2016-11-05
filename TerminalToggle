@@ -1,10 +1,27 @@
 #!/bin/bash
+#===================================================================================================
 #
-# let 'gnome-terminal' get function bind key to show hide like 'guake terminal'
+# File: TerminalToggle
 #
-
-source "/home/hanson/CodeHub/SHELL/libs/bootstrap.sh"
-
+# Description: 
+#   Do you like Guake terminal feture about showing and hiding window quickly when you type F12 ?
+#   Gnome terminal can do the same thing, if you bind a key like 'F12' to run this shell script.
+#
+# Tips: How to bind key to run a shell scirpt ?
+#   - step 1: chmod +x TerminalToggle
+#   - step 2: open unity-control-center, 
+#     keyboard => shortcuts => custom shortcuts => ...
+#
+# Required:
+#   - xdotool, you can install it like ( apt-get install xdotool )
+#
+# Author: hanson <liangguohaun@gmail.com>
+#
+# Github: https://github.com/liangguohaun
+#
+# Last Modified: 2016-11-05 10:10
+#
+#===================================================================================================
 
 title=" "
 
