@@ -14,5 +14,8 @@ case "$1" in
     lastwindow)
         tmux select-window -t `tmux list-windows | sed -n '$p' | awk -F ':' '{print $1}'`
         ;;
+    getactivewindow)
+        tmux list-windows | egrep -o ' \w+\* ' | tr -d '*' 
+        ;;
     *) echo "NONE" ;;
 esac
