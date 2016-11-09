@@ -17,5 +17,22 @@ case "$1" in
     getactivewindow)
         tmux list-windows | egrep -o ' \w+\* ' | tr -d '*' 
         ;;
+    getwindowlist)
+        tmux lsw | percol --initial-index $(tmux lsw | awk '/ .+-/ {print NR-1}') \
+                 | cut -d':' -f 1 | tr -d '\n' | xargs -0 tmux attach-session -t
+        ;;
+    getsessionlist)
+        tmux ls | percol --initial-index $(tmux ls | awk '/attached/ {print NR-1}') \
+                | cut -d':' -f 1 | tr -d '\n' | xargs -0 tmux switch-client -t
+        ;;
+    copy)
+        tmux save-buffer - | xsel -ib
+        ;;
+    paste)
+        tmux set-buffer "$(xsel -ob)"; tmux paste-buffer
+        ;;
+    clear)
+        xdotool set_window -name ' ' $(xdotool getactivewindow) && clear && tmux clear-history
+        ;;
     *) echo "NONE" ;;
 esac
