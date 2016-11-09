@@ -19,7 +19,7 @@ case "$1" in
         ;;
     getwindowlist)
         tmux lsw | percol --initial-index $(tmux lsw | awk '/ .+-/ {print NR-1}') \
-                 | cut -d':' -f 1 | tr -d '\n' | xargs -0 tmux attach-session -t
+                 | cut -d':' -f 1 | tr -d '\n' | xargs -0 tmux select-window -t
         ;;
     getsessionlist)
         tmux ls | percol --initial-index $(tmux ls | awk '/attached/ {print NR-1}') \
