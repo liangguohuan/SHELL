@@ -33,7 +33,7 @@ stateunhide='unhide'
 
 if [[ -f $file ]]  ; then
     winid=`cat $file`
-    state=`cat $filestate`
+    state=`cat $filestate 2>/dev/null`
 
     if [[ $state == $stateunhide ]]; then
         state=$statehide
