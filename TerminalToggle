@@ -25,6 +25,7 @@
 
 title=" "
 
+terminal=${1:-'gnome-terminal'}
 file=/tmp/terminal_toggle_window
 filestate=/tmp/terminal_toggle_window_state
 filegeometry=/tmp/terminal_toggle_window_geometry
@@ -40,6 +41,9 @@ if [[ -f $file ]]  ; then
         xdotool windowmap "$winid"
         xdotool windowactivate "$winid"
         eval $( cat "$filegeometry" )
+        if [[ $terminal == "roxterm" ]]; then
+            Y=$(($Y-28))
+        fi
         xdotool windowmove --sync "$winid" $X $Y
     else
         if [[ `xdotool getwindowfocus` == "$winid" ]]; then
@@ -60,8 +64,8 @@ if [[ -f $file ]]  ; then
 
     echo $state > $filestate
 else 
-    gnome-terminal --geometry=133x37+1190+705 -t "$title" &
-    xdotool search --sync --onlyvisible --class "gnome-terminal" windowactivate
+    "$terminal" --geometry=133x37+1190+705 --title="$title" &
+    xdotool search --sync --onlyvisible --class "$terminal" windowactivate
     wid=`xdotool getactivewindow`
     echo $wid > $file
     # xdotool windowsize "$wid" 100% 100%
