@@ -26,6 +26,7 @@
 title=" "
 
 terminal=${1:-'gnome-terminal'}
+geometry_default=${2:-'133x37+1190+705'}
 file=/tmp/terminal_toggle_window
 filestate=/tmp/terminal_toggle_window_state
 filegeometry=/tmp/terminal_toggle_window_geometry
@@ -59,12 +60,12 @@ if [[ -f $file ]]  ; then
     # If the window is destroyed manually, reload it
     if [[ $? > 0 ]]; then
         rm $file*
-        $0 # reload
+        $0 $* # reload
     fi
 
     echo $state > $filestate
 else 
-    "$terminal" --geometry=133x37+1190+705 --title="$title" &
+    "$terminal" --geometry="$geometry_default" --title="$title" &
     xdotool search --sync --onlyvisible --class "$terminal" windowactivate
     wid=`xdotool getactivewindow`
     echo $wid > $file
