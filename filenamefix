@@ -1,6 +1,6 @@
 #!/bin/bash
-# 修改文件名中文乱码
-
+# filename accented fix via convmv
+# fileencoding change: enca -L zh_CN -x utf-8 *.txt
 source "/home/hanson/CodeHub/SHELL/libs/bootstrap.sh"
 
 HELP_MESSAGE="
