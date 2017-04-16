@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# use awk simply.
+
+[ $# -eq 1 ] && _F=" " || _F=$1
+_P=${2-$1}
+awk -F "$_F" "{print $"$_P"}"
