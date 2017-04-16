@@ -1,0 +1,12 @@
+#!/bin/bash
+# Brief: This is a yui compress patch.
+# Purpose: Print the results of applying the fix without actually changing file.
+
+INPUT=$(cat)
+
+TEMPFILE='/tmp/21ed4d0d-f620-413c-9405-8e2585f0dd91.js'
+echo "$INPUT" > "$TEMPFILE"
+java -jar "/opt/YUI Compress/yuicompressor-2.4.8.jar" "$TEMPFILE" -o "$TEMPFILE" &>/dev/null
+cat "$TEMPFILE"
+rm "$TEMPFILE"
+
