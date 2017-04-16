@@ -36,6 +36,8 @@ function usage ()
     -d|disable    Disable ppa
     -p|purge      purge ppa
     -u|update     update all ppa in /etc/apt/sources.list.d
+                 -a update all
+                 -o update only via select
     -y            only list the enabled ppa
     -n            only list the disabled ppa
     -a            list all ppa
@@ -215,21 +217,33 @@ do
         ;;
     
     u|update )
-        tag=
-        while getopts ":yn" optin
+        tag=o
+        while getopts ":ao" optin
         do
             case $optin in
-                y) tag=y ;;
-                n) tag=n ;;
-                *) tag=n ;;
+                a) tag=a ;;
+                o) tag=o ;;
             esac
         done
-        if [[ "$tag" == 'y' ]]; then
-            sudo apt-get update -o Acquire::http::proxy="http://127.0.0.1:8087/" \
-                -o Dir::Etc::sourcelist=/etc/apt/sources.list.d \
-                -o Acquire::https::dl.google.com::Verify-Peer="false"
+        if [[ "$tag" == 'o' ]]; then
+            PS3='Please enter your choice: '
+            options=( $(getlist y | sed '$d' | sed '$d') )
+            select opt in "${options[@]}"
+            do
+                case $opt in
+                    *) 
+                        break
+                        ;;
+                esac
+            done
+            sudo apt-get update -o Dir::Etc::sourcelist="sources.list.d/$opt.list" \
+                -o Dir::Etc::sourceparts="-" \
+                -o APT::Get::List-Cleanup="0"
         else
-            sudo apt-get update
+            sudo apt-get update -o Acquire::http::proxy="http://127.0.0.1:8087/" \
+                -o Dir::Etc::sourcelist="-" \
+                -o Dir::Etc::sourceparts="/etc/apt/sources.list.d" \
+                -o Acquire::https::dl.google.com::Verify-Peer="false"
         fi
         ;;
 
