@@ -2,12 +2,23 @@
 
 # Brief:
 #   This is a shell script file for switching keymap via xmodmap quickly
+#
 # Tips:
 #   1. keycode can be found via command 'xev'
 #   2. xmodmap -pm  #print modifier map
 #   3. xmodmap -pk  #print keymap table
 #   4. disable key for nothing: keycode 50 = 0x0000
 #
+# Notice:
+#   dconf key 'alt-tab-next-window' and 'alt-tab-prev-window' will not work but the value is
+#   still be there when logout or reboot, therefore these keys must be reset then overwrite again.
+#
+# Params:
+#   1. option $1, value: "xmode" "dconf" etc.
+#     when $1 is "xmod" it will overwirte the xmodmap keys
+#     when $1 is "dconf" it will overwirte the dconf keys
+#   2. option $2, value: "swap" "default" etc.
+#     when $2 is "swap" it will overwrite keys or reset default
 
 ########################################################################
 #=> common libs
@@ -32,6 +43,7 @@ source "${HOME}/CodeHub/SHELL/libs/bootstrap.sh"
 # mod4      Super_L (0x85),  Super_R (0x86),  Super_L (0xce),  Hyper_L (0xcf)
 # mod5      ISO_Level3_Shift (0x5c),  Mode_switch (0xcb)
 
+# function getxmodmapcmd start ================
 function getxmodmapcmd() {
 DEFAULTMAPS="
 !default keymap
@@ -95,32 +107,46 @@ add shift   = Shift_L Shift_R
 "
 echo "${TEMPLATE}"
 }
+# function getxmodmapcmd end ================
 
-## main code here
+########################################################################
+#=> main code here
+########################################################################
+# 1.xmodmap keymap handle
 FILENAME="${HOME}/.Xmodmap"
 
 TAG=
 [[ -n $(sed -n '/default keymap/p' $FILENAME) ]] && TAG="swap" || TAG="default"
 
-CMDSTR=$(getxmodmapcmd $TAG)
-
-if [[ -n "$CMDSTR" ]]; then
-    sed -i '/customkeymap/,$d' "$FILENAME"
-    echo "$CMDSTR" >> "$FILENAME"
-    xmodmap "$FILENAME"
+if [[ -n $2 ]]; then
+    TAG=$2
 fi
 
-# dconf keyamp change about unity switcher
-PROFILE_KEYMAP="
-/org/compiz/profiles/unity/plugins/unityshell/alt-tab-forward,<Alt>Tab,<Control>Tab
-/org/compiz/profiles/unity/plugins/unityshell/alt-tab-prev,<Alt><Shift>Tab,<Control><Shift>Tab
-/org/compiz/profiles/unity/plugins/unityshell/alt-tab-next-window,<Alt>grave,<Control>Escape
-/org/compiz/profiles/unity/plugins/unityshell/alt-tab-prev-window,<Shift><Alt>asciitilde,<Control><Shift>Escape
-"
-for LINE in $(echo "$PROFILE_KEYMAP"); do
-    declare -a ARR=($(explode $LINE ","))
-    KEY=${ARR[0]}
-    [[ $TAG == "swap" ]] && VAL=${ARR[2]} || VAL=${ARR[1]}
-    dconf write "$KEY" "'$VAL'"
-done
+if [[ -z $1 || $1 == "xmod" ]]; then
+    CMDSTR=$(getxmodmapcmd $TAG)
 
+    if [[ -n "$CMDSTR" ]]; then
+        sed -i '/customkeymap/,$d' "$FILENAME"
+        echo "$CMDSTR" >> "$FILENAME"
+        xmodmap "$FILENAME"
+    fi
+
+fi
+
+# 2.dconf keyamp change about unity switcher
+if [[ -z $1 || $1 == "dconf" ]]; then
+
+    PROFILE_KEYMAP="
+    /org/compiz/profiles/unity/plugins/unityshell/alt-tab-forward,<Alt>Tab,<Control>Tab
+    /org/compiz/profiles/unity/plugins/unityshell/alt-tab-prev,<Alt><Shift>Tab,<Control><Shift>Tab
+    /org/compiz/profiles/unity/plugins/unityshell/alt-tab-next-window,<Alt>grave,<Control>Escape
+    /org/compiz/profiles/unity/plugins/unityshell/alt-tab-prev-window,<Shift><Alt>asciitilde,<Control><Shift>Escape
+    "
+    for LINE in $(echo "$PROFILE_KEYMAP"); do
+        declare -a ARR=($(explode $LINE ","))
+        KEY=${ARR[0]}
+        [[ $TAG == "swap" ]] && VAL=${ARR[2]} || VAL=${ARR[1]}
+        dconf write "$KEY" "'$VAL'"
+    done
+
+fi
