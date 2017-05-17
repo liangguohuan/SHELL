@@ -64,110 +64,115 @@ function randdigital {
 }
 
 #
-# 统计字符串长度
+# Get string length
 # 
 # ARG1 = string to be count length
 #
 function strlen {
-	STR="$1"
-	echo ${#STR}
+	_STR="$1"
+	echo ${#_STR}
 }
 
-# 截取字符串
+# Get substr from string
 #
 # ARG1 = string to be substr
 # ARG2 = where to be start
 # ARG3 = where to be end
 # 
 function substr {
-	STR="$1"
-	START="($2)"
-	END="$3"
-	echo ${STR:$START:$END}
+	_STR="$1"
+	_START="($2)"
+	_END="$3"
+	echo ${_STR:$_START:$_END}
 }
 
-# 从左边开始截断字符串
+# Cut substr start from left
 # 
 # ARG1 = string to be strcut
 # ARG2 = what the ended char is
 # ARG3 = whether greedy mode to be handle
 # 
 function strcut {
-	STR="$1"
-	CHAR="$2"
-	MORE="$3"
-	MATCH="${STR:0:1}*$CHAR"
-	if [[ $MORE == 1 ]]; then
-		echo ${STR##$MATCH}
+	_STR="$1"
+	_CHAR="$2"
+	_MORE="$3"
+	_MATCH="${_STR:0:1}*$_CHAR"
+	if [[ $_MORE == 1 ]]; then
+		echo ${_STR##$_MATCH}
 	else
-		echo ${STR#$MATCH}
+		echo ${_STR#$_MATCH}
 	fi
 }
 
-# 从右边开始截断字符串
+# Cut substr start from right
 #
 # ARG1 = string to be strcut
 # ARG2 = what the started char is
 # ARG3 = whether greedy mode to be handle
 # 
 function strrcut {
-	STR="$1"
-	CHAR="$2"
-	MORE="$3"
-	MATCH="$CHAR*${STR:(-1):1}"
-	echo @$MATCH@
-	if [[ $MORE == 1 ]]; then
-		echo ${STR%%$MATCH}
+	_STR="$1"
+	_CHAR="$2"
+	_MORE="$3"
+	_MATCH="$_CHAR*${_STR:(-1):1}"
+	if [[ $_MORE == 1 ]]; then
+		echo ${_STR%%$_MATCH}
 	else
-		echo ${STR%$MATCH}
+		echo ${_STR%$_MATCH}
 	fi
 }
 
-# 判断字符串是否包含子串
+# Check substr in string
 #
 # ARG1 = string to be strinstr
 # ARG2 = substr to be found
 # 
-# return = 1 or 0
+# RETURN = 1 or 0
 # 
 function strinstr {
-	STR="$1"
-	SUBSTR="$2"
-	[[ "$STR" =~ "$SUBSTR" ]] \
+	_STR="$1"
+	_SUBSTR="$2"
+	[[ "$_STR" =~ "$_SUBSTR" ]] \
 	&& echo 1 \
 	|| echo 0
 }
 
 #
-# 将数组转换为字符串
+# Join array elements with a string 
+#
 # ARG1 = array to be handle
 # ARG2 = what char to be split, default is space
 #
+# RETURN = string
+#
 function implode {
-	local -n ARR=$1
-	declare str=${ARR[@]}
+	local -n _ARRAY=$1
+	local _STR=${_ARRAY[@]}
 	[[ -n $2 ]] \
-		&& declare glue=$2 \
-		|| declare glue=" "
-	echo ${str// /$glue}
+		&& local _GLUE=$2 \
+		|| local _GLUE=" "
+	echo ${_STR// /$_GLUE}
 }
 
 #
-# 将字符串转换为数组
+# Split a string by string
 # 
 # ARG1 = string to be handle
 # ARG2 = what char to be split, default is space
 #
+# RETURN = array
+#
 function explode {
-	str=$1
+	_STR=$1
 	[[ -n $2 ]] \
-		&& declare glue=$2 \
-		|| declare glue=" "
-	str=${str//$glue/ }
-	for x in $str   
-	do  
-	    echo $x
-	done  
+		&& local _GLUE=$2 \
+		|| local _GLUE=" "
+	_STR=${_STR//$_GLUE/ }
+    echo $_STR
+	# for _X in $_STR   
+	# do  
+		# printf '%s \a' $_X
+	# done  
 }
 
 ########################################################################
@@ -176,7 +181,7 @@ function explode {
 
 
 #
-# 冒泡排序，不支持关联数组排序
+# Sort array
 # 
 # ARG1 = the array to be loop
 # 
@@ -190,37 +195,39 @@ function explode {
 # 	arrprint arr1 arr2 arr3
 #
 function arrsort {
-	local -n ARR=$1
-	len=${#ARR[@]}
-	for (( i = `expr $len-1`; i > 0; i-- )); do
+	local -n _ARRAY=$1
+	_LEN=${#_ARRAY[@]}
+	for (( i = `expr $_LEN-1`; i > 0; i-- )); do
 		for (( j = `expr $i-1`; j > -1; j-- )); do
-			if [[ ${ARR[i]} > ${ARR[j]} ]]; then
-	            temp=${ARR[$i]}
-	            ARR[$i]=${ARR[$j]}
-	            ARR[$j]=$temp
+			if [[ ${_ARRAY[i]} > ${_ARRAY[j]} ]]; then
+	            _TEMP=${_ARRAY[$i]}
+	            _ARRAY[$i]=${_ARRAY[$j]}
+	            _ARRAY[$j]=$_TEMP
 			fi
 		done
 	done
 }
 
 #
-# 查找数组中是否包含指定的元素
+# Check element whether in array
 # 
 # ARG1 = the array to be loop
 # ARG2 = the element to be found
+#
 # RETURN = -1 or gt -1, return the element index if the element be found
 #
 # Example:
 # 	arr=(1 3 5 7 9)
-# 	echo $(inarr arr 3) # 注意数组'x'不要加'$'
+# 	echo $(inarr arr 3)
+#
 function inarr {
 	# [[ "${array[@]/$var/}" != "${array[@]}" ]] && echo "in"
 	# echo "${array[@]}" | grep -wq "$var" &&  echo "in"
-	local -n ARR=$1
+	local -n _ARRAY=$1
     NEDDLE=$2
     i=0
-    for ELE in ${ARR[@]}; do
-    	if [[ "$ELE" == "$NEDDLE" ]]; then
+    for _ELE in ${_ARRAY[@]}; do
+    	if [[ "$_ELE" == "$NEDDLE" ]]; then
     		echo $i
     		return
     	fi
@@ -230,74 +237,86 @@ function inarr {
 }
 
 #
-# 获取关联数组中所有键值
+# Get all keys from array
 # 
 # ARG1 = array to be handle
 # 
+# RETURN = array
+#
 # Example:
 # 	declare -A arr
 # 	arr=([index1]=val1 [index2]=val2)
 # 	arrkeys arr
 # 
 function arrkeys {
-	local -n ARR=$1
-	echo ${!ARR[@]}
+	local -n _ARRAY=$1
+    echo '('${!_ARRAY[@]}')'
 }
 
 #
-# 获取关联数组中所有值
+# Get all values from array
 # 
 # ARG1 = array to be handle
 # 
+# RETURN = array
+#
 # Example:
 # 	declare -A arr
 # 	arr=([index1]=val1 [index2]=val2)
 # 	arrvalues arr
 # 
 function arrvalues {
-	local -n ARR=$1
-	echo ${ARR[@]}
+	local -n _ARRAY=$1
+	echo '('${_ARRAY[@]}')'
 }
 
 #
-# 统计数组元素总数
+# Array count
 # 
 # ARG1 = array to be handle
+# 
+# RETURN = number
 # 
 function count {
-	local -n ARR=$1
-	echo ${#ARR[@]}
+	local -n _ARRAY=$1
+	echo ${#_ARRAY[@]}
 }
 
 #
-# 数组截取
+# Extract a slice of the array
 # 
 # ARG1 = array to be handle
-# ARG2 = where to be start
-# ARG3 = where to be end
+# ARG2 = offset
+# ARG3 = length
 # 
+# RETURN = array
+#
 # Example:
 # 	declare -a arr=(1 9 6 8 2 5)
 # 	declare -A arrr=([index1]=val1 [index2]=val2 [index3]=val3)
-# 	declare -A temp=$(arrslice arr -2 2)
-# 	arrprint temp
+# 	declare -A arrtemp=$(arrslice arr -2 2)
+# 	arrprint arrtemp
 #
 function arrslice {
-	local -n ARR=$1
-	declare -i START="($2)"
-	declare -i END="$3"
-	declare -a temp1=(${!ARR[@]}) # 注意数组下标不支持 ${!ARR[@]:1:2} 这种方式，只有取值才支持
-	declare -a temp2=(${ARR[@]})  # 注意这里要做下间接处理,否则索引0,1开始取元素都是一样的，会破坏原来数组截取方式
-	declare -a keys=(${temp1[@]:$START:$END})
-	declare -a values=(${temp2[@]:$START:$END})
-	arrcombine keys values
+	local -n _ARRAY=$1
+	local -i _START="($2)"
+	local -i _END="$3"
+	local -a _TEMP1=(${!_ARRAY[@]})
+	local -a _TEMP2=(${_ARRAY[@]})
+	local -a _KEYS=(${_TEMP1[@]:$_START:$_END})
+	local -a _VALUES=(${_TEMP2[@]:$_START:$_END})
+    [[ $(arrisassoc $1) == 1 ]] \
+    && arrcombine _KEYS _VALUES \
+    || echo '('${_TEMP2[@]:$_START:$_END}')'
 }
 
 # 
-# 创建一个数组，用一个数组的值作为其键名，另一个数组的值作为其值
+# Create a new array from keys and vals
 # 
 # ARG1 = array keys
-# ARG2 = array values
+# ARG2 = array vals
+#
+# RETURN = array
 #
 # Example:
 # 	declare -a keys=(1 9 6 8 2 5)
@@ -306,94 +325,94 @@ function arrslice {
 # 	arrprint arr
 # 	
 function arrcombine {
-	local -n ARRKEYS=$1
-	local -n ARRVALUES=$2
-	declare -i i=0
-	echo -n "( "
-	for ELE in ${ARRKEYS[@]}; do
-		echo -n [$ELE]=${ARRVALUES[@]:i:1}
-		echo -n " "
+	local -n _ARRAYKEYS=$1
+	local -n _ARRAYVALUES=$2
+    local -i _LEN=$(count _ARRAYKEYS)
+    ((_LEN--))
+	local -i i=0
+	echo -n "("
+	for _ELE in ${_ARRAYKEYS[@]}; do
+		echo -n [$_ELE]=${_ARRAYVALUES[@]:i:1}
+        [[ $_LEN != $i ]] && echo -n " "
 		((i++))
 	done
 	echo -n ")"
 }
 
 #
-# 删除数组元素
+# Remove elements from array
 # 
 # ARG1 = array to be handle
-# ARG1..ARGN element to be removed(show the value), split by space
+# ARG2..N element to be removed(show the value), split by space
 # 
+# RETURN = array
+#
 # Example:
 # 	declare -a arr=(a b c d e f)
 # 	declare -A arrr=([index1]=val1 [index2]=val2 [index3]=val3 [index4]=val4)
 # 	arrremove arr b d
 # 	arrremove arrr val2 val3
 # 	arrprint arr arrr
-# 
-# Important: 直接改变数组，不要用 $(arrremove ...) 这种调用方式
 #
 function arrremove {
-	local -n ARR=$1
-	local -a ARRKEYS=($(arrkeys $1))
-	local -a ARRVALUES=($(arrvalues $1))
-	declare -i i=0
-	declare -i bprint=1
-	for x in ${ARRKEYS[@]}; do
-		declare -i ii=0
-		for xx in $*; do
-			if [[ $ii > 0 ]]; then
-				if [[ ${ARRVALUES[@]:i:1} == $xx ]]; then
-					unset ARR[$x]
-					bprint=0
+	local -n _ARRAY=$1
+	local -a _ARRAYKEYS=$(arrkeys $1)
+	local -a _ARRAYVALUES=$(arrvalues $1)
+	local -i i=0
+	local -i _BPRINT=1
+	for _X in ${_ARRAYKEYS[@]}; do
+		local -i _II=0
+		for _XX in $*; do
+			if [[ $_II > 0 ]]; then
+				if [[ ${_ARRAYVALUES[@]:i:1} == $_XX ]]; then
+					unset _ARRAY[$_X]
+					_BPRINT=0
 					break
 				fi
 			fi
-			((ii++))
+			((_II++))
 		done
-		bprint=1
+		_BPRINT=1
 		((i++))
 	done
 }
 
 #
-# 数组添加新元素
+# Push elements to array
 # 
 # ARG1 = array to be handle
-# ARG1..ARGN elements to be added, split by space
+# ARG2..N elements to be added, split by space
 # 
+# RETURN = array
+#
 # Example:
 # 	declare -a arr=(1 9 6 8 2 5)
 # 	declare -A arrr=([index1]=val1 [index2]=val2 [index3]=val3)
 # 	arrpush arr 12 25 67
 # 	arrpush arrr index4=val4 index8=val8
 # 	arrprint arr arrr
-# 	
-# Important: 直接改变数组，不要用 $(arrpush ...) 这种调用方式
 #
 function arrpush {
-	local -n ARR=$1
-	declare is=$(arrisnormal $1)
-	# 用 declare is=$(arrisnormal $1) 会报错: "警告: ARR: circular name reference"
-	declare -i i=0
-	for x in $*; do
+	local -n _ARRAY=$1
+	local -i i=0
+	for _X in $*; do
 		if [[ $i > 0 ]]; then
-			if [[ $is == 1 ]]; then
-				[[ $i > 0 ]] && [[ -n $x ]] && ARR=("${ARR[@]}" $x)
+            if [[ $(arrisassoc $1) == 0 ]]; then
+				[[ $i > 0 ]] && [[ -n $_X ]] && _ARRAY=("${_ARRAY[@]}" $_X)
 			else
-				declare ac=${#ARR[@]}
-				declare -a temp=($(explode $x "="))
-				declare tk=${temp[@]:0:1}
-				declare tv=${temp[@]:1:1}
-				if [[ -z $tv ]]; then
-					tk=`expr $ac + $i - 1`
-					tv=$x
+				local _AC=${#_ARRAY[@]}
+				local -a _TEMP=($(explode $_X "="))
+				local _TK=${_TEMP[@]:0:1}
+				local _TV=${_TEMP[@]:1:1}
+				if [[ -z $_TV ]]; then
+					_TK=`expr $_AC + $i - 1`
+					_TV=$_X
 				else
-					temp=($(explode $x "="))
-					tk=${temp[@]:0:1}
-					tv=${temp[@]:1:1}
+					_TEMP=($(explode $_X "="))
+					_TK=${_TEMP[@]:0:1}
+					_TV=${_TEMP[@]:1:1}
 				fi
-				ARR[$tk]=$tv
+				_ARRAY[$_TK]=$_TV
 			fi
 		fi
 		((i++))
@@ -401,20 +420,20 @@ function arrpush {
 }
 
 #
-# 判断数组是否关联数组
+# Check whether araay is assoc type
+#
+# ARG1 = array
+#
+# RETURN = 1 if array is assoc else 0
 # 
-function arrisnormal {
-	local -n ARR=$1
-	declare -i i=0
-	for x in ${!ARR[@]}; do
-		[[ $i != $x ]] && echo -1 && return
-		((i++))
-	done
-	echo 1
+function arrisassoc {
+    [[ $(declare -p $1 | grep '\-A') ]] && echo 1 || echo 0
 }
 
 #
-# 打印数组，支持多个数组传入
+# Print array nicely
+#
+# ARG1..N
 # 
 # Example:
 # 	declare -a arr=(1 9 6 8 2 5)
@@ -422,15 +441,15 @@ function arrisnormal {
 # 	arrprint arrr arr
 # 
 function arrprint {
-	for param in $*; do
-		local -n ARR=$param
-		declare -a keys=(${!ARR[@]})
-		declare -a values=(${ARR[@]})
-		declare -i i=0
-		echo $param
+	for _PARAM in $*; do
+		local -n _ARRAY=$_PARAM
+		local -a _KEYS=(${!_ARRAY[@]})
+		local -a _VALUES=(${_ARRAY[@]})
+		local -i i=0
+		echo $_PARAM
 		echo "("
-		for ELE in ${keys[@]}; do
-			echo "  [$ELE] => ${values[@]:i:1}"
+		for _ELE in ${_KEYS[@]}; do
+			echo "  [$_ELE] => ${_VALUES[@]:i:1}"
 			((i++))
 		done
 		echo ")"
@@ -444,28 +463,31 @@ function arrprint {
 
 
 #
-# URL解析
+# URL Parse
+# ARG1 = url
 # 
+# RETURN = array
+#
 # Example:
 # 	SITE="http://www.google.com/html/index.html"
-# 	declare -A arr=$(urlPaser $SITE)
+# 	declare -A arr=$(urlparse $SITE)
 #	arrprint arr
 #	echo ${arr[host]}
-function urlPaser {
-	declare SITE=$1
-	declare ARR_URL=
+function urlparse {
+	local _SITE=$1
+	local _ARRAY_URL=
 	# extract the protocol
-	proto="$(echo $SITE | grep :// | sed -e's,^\(.*://\).*,\1,g')"
+	_PROTO="$(echo $_SITE | grep :// | sed -e's,^\(.*://\).*,\1,g')"
 	# remove the protocol
-	url="$(echo ${SITE/$proto/})"
+	_URL="$(echo ${_SITE/$_PROTO/})"
 	# extract the host
-	host="$(echo ${url/$user@/} | cut -d/ -f1)"
+	_HOST="$(echo ${_URL/$user@/} | cut -d/ -f1)"
 	# extract the path (if any)
-	path="$(echo $url | grep / | cut -d/ -f2-)"
-	basename=$(basename $path)
+	_PATH="$(echo $_URL | grep / | cut -d/ -f2-)"
+	_BASENAME=$(basename $_PATH)
 
-	ARR_URL='([proto]="'$proto'" [host]="'$host'" [path]="'$path'" [basename]="'$basename'")'
-	echo $ARR_URL
+	_ARRAY_URL='([proto]="'$_PROTO'" [host]="'$_HOST'" [path]="'$_PATH'" [basename]="'$_BASENAME'")'
+	echo $_ARRAY_URL
 }
 
 # Show help messages
@@ -473,8 +495,30 @@ function urlPaser {
 # $1 msg
 # $2 exitcode
 function helpShow {
-	declare TEMP=
-	[[ -n "$1" ]] && TEMP="$1" || TEMP="$HELP_MESSAGE"
-	echo "$TEMP" | sed -e '1{/^$/d}' -e '${/^$/d}'
+	local _TEMP=
+	[[ -n "$1" ]] && _TEMP="$1" || _TEMP="$HELP_MESSAGE"
+	echo "$_TEMP" | sed -e '1{/^$/d}' -e '${/^$/d}'
 	[[ -n "$2" ]] && exit $2 || exit 1
 }
+
+# Assert expr
+# do noting if pass else exit with exitcode 1
+# ARG1 = expr
+function assert {
+    [[ "$1" == "$2" ]] || ERROR=1
+    if [[ "$ERROR" == 1 ]]; then
+        echo "$1"
+        echo "$2"
+        [[ -n "$3" ]] && echo "$3"
+        exit 1
+    fi
+}
+
+#
+# All type translate into string
+# ARG1..N
+#
+function str {
+    declare -p "$@"
+}
+
