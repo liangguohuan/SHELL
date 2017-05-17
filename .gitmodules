@@ -1,0 +1,3 @@
+[submodule "libs/bash-argsparse"]
+	path = libs/bash-argsparse
+	url = https://github.com/Anvil/bash-argsparse.git
