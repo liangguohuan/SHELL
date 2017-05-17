@@ -490,6 +490,16 @@ function urlparse {
 	echo $_ARRAY_URL
 }
 
+function fileparse {
+    local _FILENAME=$1
+    local _ARRAY_FILE=
+    _DIRNAME=$(dirname $_FILENAME)
+    _BASENAME=$(basename $_FILENAME)
+    _EXT=$(strcut $_BASENAME '.' 1)
+    _ARRAY_FILE=$(printf '([dirname]="%s" [basename]="%s" [ext]="%s")' $_DIRNAME $_BASENAME $_EXT)
+    echo $_ARRAY_FILE
+}
+
 # Show help messages
 # 
 # $1 msg

@@ -78,5 +78,11 @@ assert "${arrurl[proto]}" 'http://' 'urlparse'
 assert "${arrurl[host]}" 'www.google.com' 'urlparse'
 assert "${arrurl[path]}" 'html/index.html' 'urlparse'
 
+FILE="/home/hanson/CodeHub/PHP/Lumen/.env.local"
+declare -A arrfile=$(fileparse $FILE)
+checkstr=$(printf 'declare -A arrfile=%s([basename]=".env.local" [dirname]="/home/hanson/CodeHub/PHP/Lumen" [ext]="local" )%s' "'" "'")
+assert "$(str arrfile)" "$checkstr" 'fileparse'
+
+
 # vim: fdm=marker ts=4 sw=4 sts=4 expandtab
 
