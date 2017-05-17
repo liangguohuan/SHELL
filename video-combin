@@ -6,16 +6,20 @@
 source "$HOME/CodeHub/SHELL/libs/bootstrap.sh"
 
 HELP_MESSAGE="
-descript:
-    video combin.
+Video combine easily with ffmpeg.
 usage: 
-    video-combin filename... outputfile
+  video-combine filename ... outputfile
+  
+  -h | --help   Show help message
+
 "
 
-if [[ -z "$1" || "$1" = "--help" || "$1" = "-h" ]]; then
+#=> Show help
+if [[ -z "$1" || "$1" == "--help" || "$1" == "-h" ]]; then
     helpShow
 fi
 
+#=> Main code
 TEMPFILE="/tmp/"$(randchar)
 OUTPUTFILE=${!#}
 # FILEEXT="${OUTPUTFILE##*.}"
@@ -26,9 +30,6 @@ if [[ $# < 3 ]]; then
 fi
 
 # check files and write file list to tempfile
-# for FILE in $@; do
-#     echo $FILE
-# done
 until [[ $# == 0 ]]; do
     FILE="$1"
     if [[ "$FILE" != "$OUTPUTFILE" ]]; then
@@ -39,8 +40,9 @@ until [[ $# == 0 ]]; do
     shift
 done
 
-# combin
+# combine
 ffmpeg -f concat -i "$TEMPFILE" -c copy "$OUTPUTFILE"
 
 # delete the temp file
 rm -f "$TEMPFILE"
+
