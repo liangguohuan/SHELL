@@ -5,7 +5,7 @@
 # source "/lib/lsb/init-functions"
 # 
 
-LIBSDIR=/home/hanson/CodeHub/SHELL/libs
+LIBSDIR=$HOME/CodeHub/SHELL/libs
 
 source "${LIBSDIR}/bash-argsparse/argsparse.sh"
 source "${LIBSDIR}/bash-common-helpers.sh"

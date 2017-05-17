@@ -5,7 +5,7 @@
 # it can be instead of pkill the system command is
 #
 # ------------------------------------------------------------------
-source "/home/hanson/CodeHub/SHELL/libs/bootstrap.sh"
+source "$HOME/CodeHub/SHELL/libs/bootstrap.sh"
 
 HELP_MESSAGE="
 descript:

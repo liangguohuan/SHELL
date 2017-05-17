@@ -16,14 +16,14 @@ GAE Mode           : https
 GAE Profile        : ipv4
 GAE APPID          : blueskyallapp
 Pac Server         : http://192.168.0.186:8086/proxy.pac
-Pac File           : file:///home/hanson/goagent/local/proxy.pac
+Pac File           : ~/goagent/local/proxy.pac
 ------------------------------------------------------
 "
     exit;
 }
 
 . /lib/lsb/init-functions
-PROGRAM=/home/hanson/goagent/local/proxy.py
+PROGRAM=$HOME/goagent/local/proxy.py
 GOAGENTPID=`ps -ef | grep $PROGRAM | grep -v grep | awk '{print $2}'`
 test -x $PROGRAM || exit 0
 

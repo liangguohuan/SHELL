@@ -7,7 +7,7 @@
 ########################################################################
 #=> common libs
 ########################################################################
-source "/home/hanson/CodeHub/SHELL/libs/bootstrap.sh"
+source "$HOME/CodeHub/SHELL/libs/bootstrap.sh"
 
 ut=$(uptime | grep -o -e 'up[^,]*\?,' | tr -d ',' | sed 's/up\s*//')
 ut="⌛ ${ut}"

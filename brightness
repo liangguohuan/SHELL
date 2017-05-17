@@ -3,7 +3,7 @@
 #   change brightness setting on startup or resume
 # Notice:
 #   work in ubuntu 14
-# link: sudo ln -s /home/hanson/.shell/brightness /usr/local/bin/brightness
+# link: sudo ln -s $HOME/.shell/brightness /usr/local/bin/brightness
 [[ -n $1 ]] \
 && BRIGHTNESS=$1 \
 || BRIGHTNESS=2

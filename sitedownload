@@ -2,7 +2,7 @@
 
 # windows use '--restrict-file-names=windows' for coding
 # 
-source "/home/hanson/CodeHub/SHELL/libs/bootstrap.sh"
+source "$HOME/CodeHub/SHELL/libs/bootstrap.sh"
 
 HELP_MESSAGE="
 desc: 

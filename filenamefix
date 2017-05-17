@@ -1,7 +1,7 @@
 #!/bin/bash
 # filename accented fix via convmv
 # fileencoding change: enca -L zh_CN -x utf-8 *.txt
-source "/home/hanson/CodeHub/SHELL/libs/bootstrap.sh"
+source "$HOME/CodeHub/SHELL/libs/bootstrap.sh"
 
 HELP_MESSAGE="
 descript:

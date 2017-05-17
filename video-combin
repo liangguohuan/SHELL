@@ -3,7 +3,7 @@
 ########################################################################
 #=> common libs
 ########################################################################
-source "/home/hanson/CodeHub/SHELL/libs/bootstrap.sh"
+source "$HOME/CodeHub/SHELL/libs/bootstrap.sh"
 
 HELP_MESSAGE="
 descript:

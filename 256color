@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source "/home/hanson/CodeHub/SHELL/libs/bootstrap.sh"
+source "$HOME/CodeHub/SHELL/libs/bootstrap.sh"
 
 for fgbg in 38 48 ; do #Foreground/Background
     for color in {0..256} ; do #Colors

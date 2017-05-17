@@ -1,6 +1,6 @@
 #!/bin/bash -x 
 # from: http://genggeng.iteye.com/blog/1211693
-PROJECTS_DIR=/home/hanson/.vim_runtime/sources_non_forked
+PROJECTS_DIR=$HOME/.vim_runtime/sources_non_forked
 
 ##排除以下情况：
 ##1.非目录

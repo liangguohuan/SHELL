@@ -1,6 +1,7 @@
 #!/bin/bash
 # cd /
-# sudo -u hanson tar -zxf /home/hanson/firefox-data.tar.gz
-#sudo -u hanson cp -R /home/hanson/firefox/Cache /dev/shm
-#sudo -u hanson rm -R /home/hanson/firefox/Cache
-#sudo -u hanson mv /home/hanson/firefox/Cache /dev/shm/
+# sudo -u hanson tar -zxf $HOME/firefox-data.tar.gz
+#sudo -u hanson cp -R $HOME/firefox/Cache /dev/shm
+#sudo -u hanson rm -R $HOME/firefox/Cache
+#sudo -u hanson mv $HOME/firefox/Cache /dev/shm/
+

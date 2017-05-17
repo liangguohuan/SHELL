@@ -4,7 +4,7 @@
 #   modify the tooltip_bg_color, tooltip_fg_color, left eclipse's tooltip show well
 #
 
-source "/home/hanson/CodeHub/SHELL/libs/bootstrap.sh"
+source "$HOME/CodeHub/SHELL/libs/bootstrap.sh"
 
 COVER_COLOR=0
 BG_COLOR=FG_COLOR=BG_COLOR_NEW=FG_COLOR_NEW=

@@ -4,7 +4,7 @@
 #=> it can be replaced by 'ag' or 'ack'
 ########################################################################
 
-source "/home/hanson/CodeHub/SHELL/libs/bootstrap.sh"
+source "$HOME/CodeHub/SHELL/libs/bootstrap.sh"
 
 HELP_MESSAGE="
 descript:
