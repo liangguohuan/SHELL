@@ -486,7 +486,7 @@ function urlparse {
 	_PATH="$(echo $_URL | grep / | cut -d/ -f2-)"
 	_BASENAME=$(basename $_PATH)
 
-	_ARRAY_URL='([proto]="'$_PROTO'" [host]="'$_HOST'" [path]="'$_PATH'" [basename]="'$_BASENAME'")'
+    _ARRAY_URL=$(printf '([proto]="%s" [host]="%s" [path]="%s" [basename]="%s")' "$_PROTO" "$_HOST" "$_PATH" "$_BASENAME")
 	echo $_ARRAY_URL
 }
 
@@ -496,7 +496,7 @@ function fileparse {
     _DIRNAME=$(dirname $_FILENAME)
     _BASENAME=$(basename $_FILENAME)
     _EXT=$(strcut $_BASENAME '.' 1)
-    _ARRAY_FILE=$(printf '([dirname]="%s" [basename]="%s" [ext]="%s")' $_DIRNAME $_BASENAME $_EXT)
+    _ARRAY_FILE=$(printf '([dirname]="%s" [basename]="%s" [ext]="%s")' "$_DIRNAME" "$_BASENAME" "$_EXT")
     echo $_ARRAY_FILE
 }
 
