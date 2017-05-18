@@ -1,3 +1,6 @@
 test
 testfile
 sample
+cscope.*
+tags
+.tags
