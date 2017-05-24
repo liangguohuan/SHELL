@@ -2,18 +2,21 @@
 
 source "$HOME/CodeHub/SHELL/libs/bootstrap.sh"
 
-for fgbg in 38 48 ; do #Foreground/Background
-    for color in {0..256} ; do #Colors
-        #Display the color
-        colorp="${color}"
-        [[ $( strlen "$color" )  == 1 ]] && colorp=" ${color} "
-        [[ $( strlen "$color" )  == 2 ]] && colorp=" ${color}"
-        echo -en "\e[${fgbg};5;${color}m ${colorp} \t\e[0m"
-        #Display 10 colors per lines
-        if [ $((($color + 1) % 10)) == 0 ] ; then
-            echo #New line
-        fi
-    done
-    echo #New line
-    echo
+[[ -z $1 ]] && fgbg=48 || fgbg=38
+[[ $fgbg == 48 ]] && left=" " || left=""
+
+echo
+
+for color in {0..255} ; do #Colors
+    #Display the color
+    colorp="${color}"
+    [[ $( strlen "$color" )  == 1 ]] && colorp=" ${color} "
+    [[ $( strlen "$color" )  == 2 ]] && colorp=" ${color}"
+    echo -en "${left}\e[${fgbg};5;${color}m ${colorp} \e[0m"
+    #Display 10 colors per lines
+    if [[ $((($color + 1) % 18)) == 0 ]] ; then
+        echo #New line
+    fi
 done
+echo #New line
+echo

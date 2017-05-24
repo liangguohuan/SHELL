@@ -2,44 +2,107 @@
 # Copyright (C) 2006 by Johannes Zellner, <johannes@zellner.org>
 # modified by mac@calmar.ws to fit my output needs
 # modified by crncosta@carloscosta.org to fit my output needs
+#
+# modified by <liangguohuan@gmail.com> http://www.github.com/liangguohuan:
+#  1. argsparse component inject
+#  2. print 256 color support setting columns 
+#  3. extend for printing ansi color
+#
 
+from __future__ import print_function, division, unicode_literals
 import sys
 import os
+import argparse
+
+def group(lst, n):
+    num = len(lst) % n
+    zipped = zip(*[iter(lst)] * n)
+    return zipped if not num else zipped + [lst[-num:], ]
+
+def partition(lst, n):
+    return group(lst, int(math.ceil(len(lst)/n)))
 
 def echo(msg):
-    os.system('echo -n "' + str(msg) + '"')
+    #  os.system('echo -n "' + str(msg) + '"')
+    print('')
 
 def out(n):
-    os.system("tput setab " + str(n) + "; echo -n " + ("\"% 4d\"" % n))
-    os.system("tput setab 0")
+    #  os.system("tput setab " + str(n) + "; echo -n " + ("\"% 4d\"" % n))
+    #  os.system("tput setab 0")
+    print('\x1b[48;5;%dm% -4d\x1b[2m' % (n, n), end='')
 
-# normal colors 1 - 16
-os.system("tput setaf 16")
-for n in range(8):
-    out(n)
-echo("\n")
-for n in range(8, 16):
-    out(n)
-
-echo("\n")
-echo("\n")
-
-y=16
-while y < 231:
-    for z in range(0,6):
-        out(y)
-        y += 1
+def print_format_table_256(col=3):
+    """
+    print 256 color table
+    """
+    # normal colors 1 - 16
+    os.system("tput setaf 16")
+    for n in range(8):
+        out(n)
+    echo("\n")
+    for n in range(8, 16):
+        out(n)
 
     echo("\n")
+    echo("\n")
 
-
-echo("\n")
-
-for n in range(232, 256):
-    out(n)
-    if n == 237 or n == 243 or n == 249:
+    #  print color table support setting color
+    boxsize = 36
+    unit = 6
+    l = group(range(16, 232), 36*col)
+    for box in l:
+        _box = group(list(box), boxsize)
+        for k, __box in enumerate(_box):
+            _box[k] = list(group(list(__box), unit))
+        for x in zip(*_box):
+            for y in x:
+                for e in y:
+                    out(e)
+            echo("\n")
         echo("\n")
 
-echo("\n")
-os.system("tput setaf 7")
-os.system("tput setab 0")
+    #  y=16
+    #  while y < 231:
+            #  for z in range(0,6):
+                #  out(y)
+                #  y += 1
+    
+            #  echo("\n")
+
+    for n in range(232, 256):
+        out(n)
+        if n == 237 or n == 243 or n == 249:
+            echo("\n")
+
+    echo("\n")
+    os.system("tput setaf 7")
+    os.system("tput setab 0")
+
+#  => extend ansi color print
+def print_format_table_ansi():
+    """
+    print ansi color table
+    """
+    for style in range(8):
+        for fg in range(30,38):
+            s1 = ''
+            for bg in range(40,48):
+                format = ';'.join([str(style), str(fg), str(bg)])
+                s1 += '\x1b[%sm %s \x1b[0m' % (format, format)
+            print(s1)
+        print('')
+
+def main():
+    parser = argparse.ArgumentParser(description='Encrypt Or Decrypt binaryfile.')
+    parser.add_argument('-n', metavar='column', type=int, default=3, help='256 color table column, default: 3')
+    parser.add_argument('-f', metavar='format', nargs='?', default='256', help='suport 256 and ansi')
+    args = parser.parse_args()
+    if args.f == '256':
+        print_format_table_256(args.n)
+    else:
+        print_format_table_ansi()
+
+
+if __name__ == '__main__':
+    main()
+
