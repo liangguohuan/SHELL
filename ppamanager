@@ -69,10 +69,23 @@ function getlist {
     list=$(ls "$PPAHOME" | sed 's/.list\(.save\)\?//g'| uniq | sort)
     case $1 in
         a)
-            echo "$list"
-            tc=$(echo "$list" | wc -l)
+            yc=0
+            nc=0
+            tc=0
+            for x in $list ; do
+                out=$(cat "$PPAHOME/$x.list" | sed '/^# /d')
+                if [[ -n "$out" ]]; then
+                    yc=$(expr $yc + 1)
+                else
+                    nc=$(expr $nc + 1)
+                fi
+                echo " $x"
+                tc=$(expr $tc + 1)
+            done
+            # echo "$list"
+            # tc=$(echo "$list" | wc -l)
             echo -e "\n------ stat -------------------------------"
-            echo "All ppa count is: $tc"
+            echo "All ppa count is: $tc, Enabled count is $yc, Disabled count: $nc"
             ;;
         y)
             yc=0
@@ -160,7 +173,7 @@ do
         tearm=$(gettearm "$opt")
         project=$(getproject "$opt" | tr '-' '_')
         [[ -n "$project" ]] && project="_$project"
-        out=$( find /var/lib/apt/lists/ | grep "${tearm}${project}" | grep 'Sources\|Packages' | xargs cat )
+        out=$( sudo find /var/lib/apt/lists/ | grep "${tearm}${project}" | grep 'Sources\|Packages' | xargs cat )
         infoline='\n------- info ------------------------\n'
         [[ -z "$out" ]] && echo -e "${infoline}Sorry: can not find info file" || echo -e "${infoline}${out}"
         ;;
