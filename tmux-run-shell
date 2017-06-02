@@ -18,12 +18,15 @@ case "$1" in
         tmux list-windows | egrep -o ' \w+\* ' | tr -d '*' 
         ;;
     getwindowlist)
-        tmux lsw | percol --initial-index $(tmux lsw | awk '/ .+-/ {print NR-1}') \
+        tmux lsw | sed 's/^/ /g' | percol --initial-index $(tmux lsw | awk '/ .+-/ {print NR-1}') \
                  | cut -d':' -f 1 | tr -d '\n' | xargs -0 tmux select-window -t
         ;;
     getsessionlist)
-        tmux ls | percol --initial-index $(tmux ls | awk '/attached/ {print NR-1}') \
+        tmux ls | sed 's/^/ /g' | percol --initial-index $(tmux ls | awk '/attached/ {print NR-1}') \
                 | cut -d':' -f 1 | tr -d '\n' | xargs -0 tmux switch-client -t
+        ;;
+    getkeylist)
+        tmux list-keys | sed 's/^/ /g' | percol | xargs -i tmux kill-pane
         ;;
     copy)
         tmux save-buffer - | xsel -ib
