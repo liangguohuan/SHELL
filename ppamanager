@@ -9,7 +9,7 @@
 #   1. simple handle via ubuntu 'system config'->'software and update'
 #   2. A gui ppa manager like 'y-ppa-manager', it' nicy, but often get no response.  
 #
-# Fetures:
+# Features:
 #   1. show list for ppa
 #   2. show info about ppa
 #   3. disable ppa
@@ -54,7 +54,7 @@ function getppaname {
     fi
 }
 
-function gettearm {
+function getteam {
     ppaname=$(getppaname $1)
     echo "$ppaname" | awk -F '/' '{print $1}'
 }
@@ -170,10 +170,10 @@ do
                     ;;
             esac
         done
-        tearm=$(gettearm "$opt")
+        team=$(getteam "$opt")
         project=$(getproject "$opt" | tr '-' '_')
         [[ -n "$project" ]] && project="_$project"
-        out=$( sudo find /var/lib/apt/lists/ | grep "${tearm}${project}" | grep 'Sources\|Packages' | xargs cat )
+        out=$( sudo find /var/lib/apt/lists/ | grep "${team}${project}" | grep 'Sources\|Packages' | xargs cat )
         infoline='\n------- info ------------------------\n'
         [[ -z "$out" ]] && echo -e "${infoline}Sorry: can not find info file" || echo -e "${infoline}${out}"
         ;;
