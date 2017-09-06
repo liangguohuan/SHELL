@@ -69,6 +69,9 @@ else
     xdotool search --sync --onlyvisible --class "$terminal" windowactivate
     wid=`xdotool getactivewindow`
     echo $wid > $file
+    sleep 1
+    xdotool type 'ms three'
+    xdotool key ctrl+m
     # xdotool windowsize "$wid" 100% 100%
     # xdotool key --delay 1000 F11
 fi
