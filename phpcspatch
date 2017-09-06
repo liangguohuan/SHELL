@@ -3,8 +3,9 @@
 # Purpose: Print the results of applying the fix without actually changing file.
 
 INPUT=$(cat)
+FORMATER=~/.composer/vendor/bin/php-cs-fixer 
 
 TEMPFILE='/tmp/0b16e08f-4729-44c5-8f36-70e1ece363b7'
 echo "$INPUT" > "$TEMPFILE"
-php-cs-fixer fix --level=psr2 -n "$TEMPFILE" &>/dev/null
+$FORMATER fix --rules='{"@PSR2": true,"concat_space": {"spacing": "one"}}' -n "$TEMPFILE" &>/dev/null
 cat "$TEMPFILE"
