@@ -30,8 +30,14 @@ geometry_default=${2:-'133x37+1190+705'}
 file=/tmp/terminal_toggle_window
 filestate=/tmp/terminal_toggle_window_state
 filegeometry=/tmp/terminal_toggle_window_geometry
+filefcitxstate=/tmp/terminal_toggle_fcitx_state
 statehide='hide'
 stateunhide='unhide'
+switchfcitx='1'
+inputmethod='sogoupinyin'
+fcitxstate=$(fcitx-remote)
+
+[[ $switchfcitx == '1' && $fcitxstate == '2' ]] && fcitx-remote -c $inputmethod 
 
 if [[ -f $file ]]  ; then
     winid=`cat $file`
@@ -46,8 +52,10 @@ if [[ -f $file ]]  ; then
             Y=$(($Y-28))
         fi
         xdotool windowmove --sync "$winid" $X $Y
+        echo $fcitxstate > $filefcitxstate
     else
         if [[ `xdotool getwindowfocus` == "$winid" ]]; then
+            [[ $switchfcitx == '1' && $(cat $filefcitxstate) == '2' ]] && fcitx-remote -o $inputmethod 
             state=$stateunhide
             xdotool getwindowgeometry --shell "$winid" > $filegeometry
             xdotool windowunmap "$winid"
