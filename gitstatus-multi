@@ -1,0 +1,26 @@
+#!/usr/bin/env zsh
+#=======================================================================================================================
+# Brief: do `git status` in many directory
+# Usage: gitstatus-multi [path]
+#=======================================================================================================================
+
+declare -i COUNT=0
+declare -a UPDATE_REPO=()
+
+repohub=${1:-$(pwd)}
+cd $repohub
+for repo in $(ls -d */) ; do
+    cd $repohub/$repo
+    if git status | grep -q '(use ' ; then
+        (( COUNT += 1 ))
+        UPDATE_REPO+=($repo)
+        # repeat 50 printf "_"; print
+        REALPATH=$(ls -lh $(pwd) | awk '{print $11}')
+        echo "---------------" "\x1b[47;30m" ${repo%/} "\x1b[0m" "("$REALPATH")" "---------------"
+        git status
+    fi
+done
+
+echo "---------------" "\x1b[47;30m" "STAT("$COUNT")" "\x1b[0m" "---------------"
+declare -p UPDATE_REPO | grep -o '(.*)'
+
