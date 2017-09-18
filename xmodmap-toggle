@@ -49,29 +49,23 @@ DEFAULTMAPS="
 !default keymap
 keycode 9   = Escape
 keycode 37  = Control_L
-keycode 50  = Shift_L
 keycode 64  = Alt_L Meta_L
 keycode 66  = Caps_Lock
-keycode 72  = F6
-keycode 73  = F7
-keycode 105 = Control_R
+keycode 76  = F10
 keycode 108 = Alt_R Meta_R
 keycode 133 = Super_L
 keycode 135 = Menu
 "
 SWAPMAPS="
 !swap keymap
-keycode 9   = F7
+keycode 9   = Caps_Lock
 keycode 37  = Super_L
-keycode 50  = Shift_L
 keycode 64  = Control_L
 keycode 66  = Escape
-keycode 72  = Menu
-keycode 73  = Caps_Lock
-keycode 105 = Alt_R Meta_R
-keycode 108 = F6
+keycode 76  = Menu
+keycode 108 = F10
 keycode 133 = Alt_L Meta_L
-keycode 135 = Control_R
+keycode 135 = Alt_R Meta_R
 "
 
 TEMP=
