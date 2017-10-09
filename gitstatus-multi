@@ -7,7 +7,7 @@
 declare -i COUNT=0
 declare -a UPDATE_REPO=()
 
-repohub=${1:-$(pwd)}
+repohub=$(realpath ${1:-$(pwd)})
 cd $repohub
 for repo in $(ls -d */) ; do
     cd $repohub/$repo
