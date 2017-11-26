@@ -1,0 +1,19 @@
+#!/bin/bash
+# vim: fdm=marker ts=4 sw=4 sts=4 expandtab
+
+filename="$1"
+target="$filename"
+shift
+for tag in "$@" ; do
+    if grep -q '{.*}' <<< $filename; then
+        tags=$(echo "$filename" | grep -o '{.*}')
+        tags=$(echo "$tags" | sed -e "s/#$tag\b\s*//g" -e "s/}/ #$tag}/")
+        tfilename=$(echo "$filename" | sed 's/{.*}//')
+    else
+        tags=" {#$tag}"
+        tfilename="$filename"
+    fi
+    nfilename=$(echo "$tfilename" | sed "s/\(.[A-Za-z0-9]\+\)$/$tags\1/")
+    filename="$nfilename"
+done
+mv "$target" "$nfilename"
