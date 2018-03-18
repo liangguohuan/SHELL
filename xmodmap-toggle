@@ -133,8 +133,8 @@ if [[ -z $1 || $1 == "dconf" ]]; then
     PROFILE_KEYMAP="
     /org/compiz/profiles/unity/plugins/unityshell/alt-tab-forward,<Alt>Tab,<Control>Tab
     /org/compiz/profiles/unity/plugins/unityshell/alt-tab-prev,<Alt><Shift>Tab,<Control><Shift>Tab
-    /org/compiz/profiles/unity/plugins/unityshell/alt-tab-next-window,<Alt>grave,<Control>Escape
-    /org/compiz/profiles/unity/plugins/unityshell/alt-tab-prev-window,<Shift><Alt>asciitilde,<Control><Shift>Escape
+    /org/compiz/profiles/unity/plugins/unityshell/alt-tab-next-window,<Alt>grave,<Control>grave
+    /org/compiz/profiles/unity/plugins/unityshell/alt-tab-prev-window,<Shift><Alt>asciitilde,<Control><Shift>grave
     "
     for LINE in $(echo "$PROFILE_KEYMAP"); do
         declare -a ARR=($(explode $LINE ","))

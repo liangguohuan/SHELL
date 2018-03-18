@@ -78,6 +78,7 @@ else
     wid=`xdotool getactivewindow`
     echo $wid > $file
     sleep 1
+    fcitx-remote -c $inputmethod
     xdotool type 'ms three'
     xdotool key ctrl+m
     # xdotool windowsize "$wid" 100% 100%
