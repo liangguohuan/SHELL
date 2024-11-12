@@ -32,6 +32,7 @@ msg_info "start download ... "
 
 [[ -n "$HOST" ]] && \
 wget \
+     --header "Cookie: _ga=GA1.2.2131440789.1554519153; remember_token=86c0c233-d8be-48e5-abee-4bcfd5be4884; uid=rBACIl7V8pWqlGuqTEcVAg==; _tower2_session=25cf02ab02a2ed8642aa8eb8c26fb6b8; Hm_lvt_e1fa918d304786452f7d6936febd93c6=1595323072; mp_72ddb7dd79e1c48afb3e27e0efd70a74_mixpanel=%7B%22distinct_id%22%3A%20%2216cd5de488a240-05b711ff4242ae-38637701-384000-16cd5de488be39%22%2C%22%24device_id%22%3A%20%2216cd5de488a240-05b711ff4242ae-38637701-384000-16cd5de488be39%22%2C%22%24initial_referrer%22%3A%20%22https%3A%2F%2Ftower.im%2Fteams%2F12559%2Fdocuments%2F24035%2F%22%2C%22%24initial_referring_domain%22%3A%20%22tower.im%22%2C%22User%20ID%22%3A%20%227656768%22%7D; remember_team_guid=86048b7920fe43808552c6996ee3e251; NPS_090ee452_last_seen=1595323248494; NPS_090ee452_surveyed=true; Hm_lpvt_e1fa918d304786452f7d6936febd93c6=1595325045; intercom-session-xbtsuf77=MHNiVW9NU2hUNGNCdVVVcVdpbG1jTDQrV215Q01yekkvMVZHcVRFYmJyZWlmUDFaRDRTLytvSjVmQ2QwOFpVby0tU0M4Z01oRkF5eHoydkswYk5EdEJldz09--842a83313af31b43a5bf67cd1badd7ed75eaea4b" \
      --recursive \
      --no-clobber \
      --page-requisites \

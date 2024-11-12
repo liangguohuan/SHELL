@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # desc: search process who  own the port
 # netstat -apn | grep $1, but is not be strict 
 
@@ -22,10 +22,11 @@ if [[ -z "$1" || "$1" = "--help" || "$1" = "-h" ]]; then
     helpShow
 fi
 
-MSG=`sudo netstat -tlnp | egrep \(:$1\\\s+\|State\)`
+# MSG=`sudo netstat -tlnp | egrep \(:$1\\\s+\|State\)`
+MSG=`sudo netstat -tlna | egrep .$1` # Mac
 COUNT=`echo "$MSG" | wc -l`
 
-if [[ $COUNT > 1 ]]
+if [[ $COUNT -gt 0 ]]
 then 
     # echo "======================== EXEC netstat =========================================================="
     echo "$MSG"

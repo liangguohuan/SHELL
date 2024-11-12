@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+# rsync -aurtvzP --delete --exclude tmp --exclude .history  ~/Workspace "/Users/liangguohuan/Library/Mobile Documents/com~apple~CloudDocs"
+# rsync -aurtvzP --delete --exclude tmp --exclude .history  "/Users/liangguohuan/Library/Mobile Documents/com~apple~CloudDocs/Workspace" ~
+#
+# crontab : * 8,20 * * * /opt/homebrew/bin/unison -batch -ignore "Name tmp" -ignore "Name .history" -ignore "Name .DS_Store" "/Users/liangguohuan/Workspace" "/Users/liangguohuan/Library/Mobile Documents/com~apple~CloudDocs/Workspace"
+
+# brew install autozimu/homebrew-formulas/unison-fsmonitor
+#
+unison -auto -batch -repeat watch -ignore "Name tmp" -ignore "Name .history" -ignore "Name .DS_Store" "$HOME/Workspace" "$HOME/Library/Mobile Documents/com~apple~CloudDocs/Workspace"

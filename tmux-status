@@ -9,8 +9,8 @@
 ########################################################################
 source "$HOME/CodeHub/SHELL/libs/bootstrap.sh"
 
-ut=$(uptime | grep -o -e 'up[^,]*\?,' | tr -d ',' | sed 's/up\s*//')
-ut="⌛ ${ut}"
+ut=$(uptime | grep -o -e 'up[^,]*' | tr -d ' ' | sed 's/up\s*//')
+ut="${ut}"
 
 lock=$(xset -q | grep Caps | awk '{print $4}')
 [[ $lock == "on" ]] && lock="on" || lock="off"

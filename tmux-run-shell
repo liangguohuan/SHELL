@@ -35,7 +35,7 @@ case "$1" in
         tmux set-buffer "$(xsel -ob)"; tmux paste-buffer
         ;;
     clear)
-        xdotool set_window -name ' ' $(xdotool getactivewindow) && clear && tmux clear-history
+        clear && tmux clear-history
         ;;
     *) echo "NONE" ;;
 esac
